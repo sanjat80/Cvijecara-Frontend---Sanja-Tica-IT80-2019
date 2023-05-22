@@ -32,3 +32,10 @@ export interface ProizvodDetalji{
     kategorija: number;
     vrsta: number;
 }
+
+export interface ProductParams{
+    orderBy:string;
+    searchTerm?: string;
+    kategorija?:string[];
+    vrsta?:string[];
+}

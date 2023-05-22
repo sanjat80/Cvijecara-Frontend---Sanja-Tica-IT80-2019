@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { router } from "../../router/Routes";
 import { store } from "../store/configureStore";
 import { url } from "inspector";
-import { CreateProizvod, Proizvod } from "../models/proizvod";
+import { CreateProizvod, ProductParams, Proizvod } from "../models/proizvod";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -67,7 +67,7 @@ axios.interceptors.response.use(response => {
             toast.error(data)
             break;*/
         case 500:
-            router.navigate('/server-error', {state: {error: data}});
+            router.navigate('/server-error', {state: {error: data.title}});
             break;
         default:
             break;
@@ -78,6 +78,7 @@ axios.interceptors.response.use(response => {
 
 export const requests = {
     get: (url: string) => axios.get(url).then(responseBody),
+    getFilters:<T> (url: string, params?:any):Promise<AxiosResponse<T>> => axios.get(url,{params}).then(responseBody),
     post: (url: string, body:{}) => axios.post(url, body).then(responseBody),
     put: (url: string, body:{}) => axios.put(url,body).then(responseBody),
     delete: (url: string) => axios.delete(url).then(responseBody),
@@ -95,7 +96,8 @@ export const requestsWithHeaders = {
 
 const Catalog = {
     list: () => requests.get('proizvodi'),
-    details: (id:number) => requests.get(`proizvodi/proizvodiZaFront/${id}`)
+    details: (id:number) => requests.get(`proizvodi/proizvodiZaFront/${id}`),
+    listFilters:(params:ProductParams)=>requests.getFilters('proizvodi',params)
 }
 
 const TestErrors = {
@@ -177,7 +179,10 @@ const Order ={
     const config = { headers: { ...defaultHeaders, ...headers } };
     return requestsWithHeaders.put('stavkeKorpe/porudzbinaNaStavkama',{},config)
   },
-  getAllPorudzbinaFromCurrentUser:()=>requests.get('porudzbine/porudzbineKorpe')
+  getAllPorudzbinaFromCurrentUser:(headers={})=>{
+    const config = { headers: { ...defaultHeaders, ...headers } };
+    return requestsWithHeaders.get('porudzbine/porudzbineKorpe',config)
+  }
 }
 
 const Type = {
@@ -198,6 +203,10 @@ function createFormData(item:any){
     formData.append(key, item[key])
   }
   return formData;
+}
+
+const Filters ={
+  filteri: ()=> requests.get('proizvodi/filteri')
 }
 
 const Admin ={
@@ -242,7 +251,8 @@ const agent = {
     Package,
     Categories,
     Admin,
-    Payments
+    Payments,
+    Filters
 }
 
 export default agent;

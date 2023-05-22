@@ -142,7 +142,6 @@ export default function Checkout() {
       await submitOrder(data);
       toast.success('Pozvano')
     }
-    //toast.success('Pozvano dugme handleNext')
     setActiveStep(activeStep + 1);
   };
 

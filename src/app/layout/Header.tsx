@@ -3,8 +3,9 @@ import { AppBar, Badge, Box, IconButton, List, ListItem, Switch, Toolbar, Typogr
 import { Link, NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/configureStore";
 import SignedInMenu from "./SignedInMenu";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { setUser } from "../../features/account/accountSlice";
+import jwtDecode from "jwt-decode";
 
 const midLinks = [
     {title:'katalog', path:'/catalog'},
@@ -22,9 +23,19 @@ interface Props{
     handleThemeChange: () => void;
 }
 
+interface decodedToken{
+    role:string;
+}
+
 export default function Header({darkMode, handleThemeChange}:Props){
     const dispatch = useAppDispatch();
+    const [isAdmin, setIsAdmin] = useState(false);
     const {user} = useAppSelector(state => state.account);
+    /*const userToken = localStorage.getItem('user');
+    const token = userToken ? JSON.parse(userToken).data.token : '';
+    const decodedToken = jwtDecode<{ roles: string[] }>(token);
+    const {roles} = decodedToken;
+    const isAdmin = roles && roles.includes('admin'); */
     //const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     useEffect(() => {
@@ -34,6 +45,14 @@ export default function Header({darkMode, handleThemeChange}:Props){
         if (storedUser) {
           // Convert the JSON string to a JavaScript object
           const parsedUser = JSON.parse(storedUser);
+          const token = parsedUser.data.token;
+          const decoded = jwtDecode<decodedToken>(token);
+          const role = decoded.role;
+          if(role === 'admin')
+          {
+            setIsAdmin(true)
+          } 
+          setIsAdmin(false);
           
           // Dispatch an action to update the user in the Redux store
           dispatch(setUser(parsedUser));
@@ -63,22 +82,24 @@ export default function Header({darkMode, handleThemeChange}:Props){
                             {title.toUpperCase()}
                         </ListItem>
                     ))}
-                    {user &&
+                    {user && 
                     <ListItem
                          component={NavLink}
                          to={'/inventory'}
                          sx={{color:'inherit',typography: 'h6', fontFamily:'Old Standard TT',fontWeight:'bold'}}
                         >
-                            INVENTORY
+                            INVENTAR
                         </ListItem>}
                 </List>
                 
                 <Box display='flex' alignItems='center'>
+                    {user &&
                     <IconButton component={Link} to='/basket'size='large' edge='start' color='inherit' sx={{mr: 2}}>
                         <Badge color="secondary">
                             <ShoppingCart></ShoppingCart>
                         </Badge>
                     </IconButton>
+                    }
                     {user ? (
                         <SignedInMenu/>
                     ):(

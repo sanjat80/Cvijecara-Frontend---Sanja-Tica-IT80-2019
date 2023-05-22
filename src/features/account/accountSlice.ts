@@ -62,6 +62,10 @@ interface Credentials {
           };
       try {
         const user = await axios.post('/Account/login', {korisnickoIme, lozinka},config);
+        if (user.status === 401) {
+          // Unauthorized - Invalid credentials
+          return thunkAPI.rejectWithValue({ error: 'Ne poklapaju se lozinka i korisnicko ime!'});
+          }
         localStorage.setItem('user',JSON.stringify(user));
         return user;
     } catch (error: any) {
