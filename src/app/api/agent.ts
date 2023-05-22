@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { router } from "../../router/Routes";
 import { store } from "../store/configureStore";
 import { url } from "inspector";
-import { Proizvod } from "../models/proizvod";
+import { CreateProizvod, Proizvod } from "../models/proizvod";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -201,21 +201,14 @@ function createFormData(item:any){
 }
 
 const Admin ={
-  createProduct: (product:Proizvod) =>requests.post('proizvodi',product),
-  updateProduct: (product: {
-    proizvodId: number;
-    naziv: string;
-    cijena: number;
-    valuta: string;
-    velicina: string;
-    zalihe: number;
-    pakovanjeId: number;
-    kategorijaId: number;
-    vrstaId: number;
-  }, headers={}) => {
-    const { proizvodId, ...productData } = product;
+  createProduct: (product:CreateProizvod, headers={}) =>{
+    const config = { headers: { ...defaultHeaders, ...headers }}
+    return requestsWithHeaders.post('proizvodi',product, config)
+  },
+  updateProduct: (product: Proizvod, headers={}) => {
+    //const { proizvodId, ...productData } = product;
     const config = { headers: { ...defaultHeaders, ...headers } };
-    return requestsWithHeaders.put(`proizvodi`, productData,config)},
+    return requestsWithHeaders.put(`proizvodi`, product,config)},
   deleteProduct:(id:number,headers={})=>{
       const config = { headers: { ...defaultHeaders, ...headers } };
       return requestsWithHeaders.delete(`proizvodi/${id}`,config)

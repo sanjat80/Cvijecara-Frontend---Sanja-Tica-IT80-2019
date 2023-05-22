@@ -137,7 +137,7 @@ export default function Checkout() {
     {
       agent.Order.updatePorudzbina();
     }
-    else if(activeStep === steps.length - 1)
+    else if(activeStep === 2)
     {
       await submitOrder(data);
       toast.success('Pozvano')

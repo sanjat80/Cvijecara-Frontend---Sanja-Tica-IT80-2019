@@ -5,6 +5,7 @@ import agent from "../../app/api/agent";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import { Proizvod } from "../../app/models/proizvod";
 import ProductForm from "./ProductForm";
+import { createValidationSchema, updateValidationSchema } from "./productValidation";
 
 
 export default function Inventory() {
@@ -15,7 +16,11 @@ export default function Inventory() {
     const [vrste, setVrste] = useState<number[]>([]);
     const [kategorije, setKategorije] = useState<number[]>([]);
     const [pakovanja, setPakovanja]=useState<number[]>([]);
+    //const [errors, setErrors] = useState(FieldErrors<Proizvod>)
     const [target, setTarget] = useState(0);
+    let validationSchema;
+
+
     function handleSelectProduct(product: Proizvod){
         setSelectedProduct(product);
         setEditMode(true);
@@ -70,14 +75,14 @@ export default function Inventory() {
                     <TableHead>
                         <TableRow>
                             <TableCell align="left">ProizvodId</TableCell>
-                            <TableCell align="left">Proizvod</TableCell>
-                            <TableCell align="right">Valuta</TableCell>
-                            <TableCell align="center">Vrsta</TableCell>
-                            <TableCell align="center">Zalihe</TableCell>
-                            <TableCell align="center">Cijena</TableCell>
+                            <TableCell align="right">Naziv</TableCell>
+                            <TableCell align="right">Cijena</TableCell>
+                            <TableCell align="center">Valuta</TableCell>
                             <TableCell align="center">Velicina</TableCell>
+                            <TableCell align="center">Zalihe</TableCell>
                             <TableCell align="center">Pakovanje</TableCell>
-                            <TableCell align="right">Kategorija</TableCell>
+                            <TableCell align="center">Kategorija</TableCell>
+                            <TableCell align="right">Vrsta</TableCell>
                             <TableCell align="right">Akcije</TableCell>
                         </TableRow>
                     </TableHead>
@@ -90,18 +95,14 @@ export default function Inventory() {
                                 <TableCell component="th" scope="row">
                                     {product.proizvodId}
                                 </TableCell>
-                                <TableCell align="left">
-                                    <Box display='flex' alignItems='center'>
-                                        <span>{product.naziv}</span>
-                                    </Box>
-                                </TableCell>
-                                <TableCell align="right">{product.valuta}</TableCell>
-                                <TableCell align="center">{product.vrstaId}</TableCell>
-                                <TableCell align="center">{product.zalihe}</TableCell>
+                                <TableCell align="right">{product.naziv}</TableCell>
                                 <TableCell align="center">{product.cijena}</TableCell>
+                                <TableCell align="center">{product.valuta}</TableCell>
                                 <TableCell align="center">{product.velicina}</TableCell>
+                                <TableCell align="center">{product.zalihe}</TableCell>
                                 <TableCell align="center">{product.pakovanjeId}</TableCell>
                                 <TableCell align="center">{product.kategorijaId}</TableCell>
+                                <TableCell align="center">{product.vrstaId}</TableCell>
                                 <TableCell align="right">
                                     <Button onClick={()=>handleSelectProduct(product)} startIcon={<Edit />} />
                                     <Button startIcon={<Delete />} color='error' onClick={()=>handleDeleteProduct(product.proizvodId)} />

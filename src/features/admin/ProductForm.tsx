@@ -1,77 +1,123 @@
 import { Typography, Grid, Paper, Box, Button } from "@mui/material";
-import { FieldValue, FieldValues, useForm } from "react-hook-form";
+import { Control, FieldValues, useForm } from "react-hook-form";
 import AppTextInput from "../../app/components/AppTextInput";
-import { Proizvod } from "../../app/models/proizvod";
+import { CreateProizvod, Proizvod } from "../../app/models/proizvod";
 import { useEffect } from "react";
 import AppSelectList from "../../app/components/AppSelectList";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { validationSchema } from "./productValidation";
+import { updateValidationSchema, createValidationSchema } from "./productValidation";
 import agent from "../../app/api/agent";
-import ProductsCard from "../catalog/ProductCard";
-import { useAppDispatch } from "../../app/store/configureStore";
+import * as yup from 'yup';
+import { toast } from "react-toastify";
 interface Props{
     product?: Proizvod;
     cancelEdit: ()=> void;
     vrste: number[];
     kategorije: number[];
     pakovanja: number[];
+    //errors: any
+    //validationSchema: yup.ObjectSchema<any>;
 }
 
 
 export default function ProductForm({product, cancelEdit, vrste, kategorije, pakovanja}:Props) {
-    const { control, reset } = useForm({
-        resolver: yupResolver(validationSchema)
+    /*const isUpdateAction = !!product;
+    validationSchema = isUpdateAction ? updateValidationSchema : createValidationSchema*/
+    const { control, reset } = useForm<FieldValues>({
+        defaultValues:product
     });
-    const dispatch = useAppDispatch();
 
-    function handleSubmitData(data:FieldValues){
+    /*function handleSubmitData(data:FieldValues, event: React.FormEvent<HTMLFormElement>){
+        event.preventDefault();
         try {
             if(product)
             {
+                console.log(product)
                 const productData: Proizvod = {
-                    proizvodId: data.proizvodId, // Fill in the correct value
-                    naziv: data.naziv, // Fill in the correct value
-                    cijena: data.cijena, // Fill in the correct value
-                    valuta: data.valuta, // Fill in the correct value
-                    velicina: data.velicina, // Fill in the correct value
-                    zalihe: data.zalihe, // Fill in the correct value
-                    pakovanjeId: data.pakovanjeId, // Fill in the correct value
-                    kategorijaId: data.kategorijaId, // Fill in the correct value
-                    vrstaId: data.vrstaId // Fill in the correct value
+                    proizvodId: data.proizvodId, 
+                    naziv: data.naziv, 
+                    cijena: data.cijena, 
+                    valuta: data.valuta, 
+                    velicina: data.velicina, 
+                    zalihe: data.zalihe, 
+                    pakovanjeId: data.pakovanjeId, 
+                    kategorijaId: data.kategorijaId, 
+                    vrstaId: data.vrstaId
                   };
                 agent.Admin.updateProduct(productData)
                   .then((response: Proizvod) => {
-                    // Handle the successful response
+                    
                     console.log('Product updated:', response);
                     cancelEdit();
-                    // Perform any additional actions or update the UI accordingly
+                    
                   })
 
                   .catch((error: any) => {
-                    // Handle the error
                     console.log('Error updating product:', error);
-                    // Display an error message or take appropriate actions
                   });
             
                 } else {
-                    const productData: Proizvod = {
-                        proizvodId: data.proizvodId, // Fill in the correct value
-                        naziv: data.naziv, // Fill in the correct value
-                        cijena: data.cijena, // Fill in the correct value
-                        valuta: data.valuta, // Fill in the correct value
-                        velicina: data.velicina, // Fill in the correct value
-                        zalihe: data.zalihe, // Fill in the correct value
-                        pakovanjeId: data.pakovanjeId, // Fill in the correct value
-                        kategorijaId: data.kategorijaId, // Fill in the correct value
-                        vrstaId: data.vrstaId // Fill in the correct value
+                    console.log(product)
+                    const productData: CreateProizvod = {
+                        //proizvodId: data.proizvodId, 
+                        naziv: data.naziv,
+                        cijena: data.cijena,
+                        valuta: data.valuta,
+                        velicina: data.velicina, 
+                        zalihe: data.zalihe, 
+                        pakovanjeId: data.pakovanjeId, 
+                        kategorijaId: data.kategorijaId,
+                        vrstaId: data.vrstaId 
                       };
-                    agent.Admin.createProduct(productData);
+                    agent.Admin.createProduct(productData).then((response: Proizvod)=>{
+                        toast.success("Proizvod uspjesno dodat");
+                        cancelEdit();
+                    })
                 }
             } catch( error)
             {
                 console.log(error);
             }
-    }
+    }*/
+    function handleSubmitData(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+      
+        try {
+          const formData = new FormData(event.currentTarget);
+      
+          const productData: Proizvod | CreateProizvod = {
+            proizvodId: product ? formData.get('proizvodId') as unknown as number : undefined,
+            naziv: formData.get('naziv') as string,
+            cijena: formData.get('cijena') as unknown as number,
+            valuta: formData.get('valuta') as string,
+            velicina: formData.get('velicina') as string,
+            zalihe: formData.get('zalihe') as unknown as number,
+            pakovanjeId: formData.get('pakovanjeId') as unknown as number,
+            kategorijaId: formData.get('kategorijaId') as unknown as number,
+            vrstaId: formData.get('vrstaId') as unknown as number,
+          };
+      
+          if (product) {
+            agent.Admin.updateProduct(productData as Proizvod)
+              .then((response: Proizvod) => {
+                console.log('Product updated:', response);
+                cancelEdit();
+              })
+              .catch((error: any) => {
+                console.log('Error updating product:', error);
+              });
+          } else {
+            agent.Admin.createProduct(productData as CreateProizvod)
+              .then((response: Proizvod) => {
+                toast.success('Proizvod uspjesno dodat');
+                cancelEdit();
+              });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      
     
 
     useEffect(()=>{
@@ -82,10 +128,13 @@ export default function ProductForm({product, cancelEdit, vrste, kategorije, pak
             <Typography variant="h4" gutterBottom sx={{mb: 4}}>
                 Product Details
             </Typography>
+            <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmitData(e)}>
             <Grid container spacing={3}>
-            <Grid item xs={12} sm={12}>
+            {product ? (
+                <Grid item xs={12} sm={12}>
                     <AppTextInput control={control} name='proizvodId' label='Id proizvoda' />
                 </Grid>
+                ) : null}
                 <Grid item xs={12} sm={12}>
                     <AppTextInput control={control} name='naziv' label='Naziv proizvoda' />
                 </Grid>
@@ -102,19 +151,36 @@ export default function ProductForm({product, cancelEdit, vrste, kategorije, pak
                     <AppTextInput control={control} name='zalihe' label='Zalihe' />
                 </Grid>
                 <Grid item xs={12}>
-                    <AppSelectList control={control} name='pakovanjeId' label='Pakovanje' items={pakovanja} />
-                </Grid>
-                <Grid item xs={12}>
-                    <AppSelectList control={control} name='kategorijaId' label='Kategorija' items={kategorije} />
-                </Grid>
-                <Grid item xs={12}>
-                    <AppSelectList control={control} name='vrstaId' label='Vrste' items={vrste} />
-                </Grid>
+  <AppSelectList
+    control={control}
+    name="pakovanjeId"
+    label="Pakovanje"
+    items={pakovanja}
+  />
+</Grid>
+<Grid item xs={12}>
+  <AppSelectList
+    control={control}
+    name="kategorijaId"
+    label="Kategorija"
+    items={kategorije}
+  />
+</Grid>
+<Grid item xs={12}>
+  <AppSelectList
+    control={control}
+    name="vrstaId"
+    label="Vrste"
+    items={vrste}
+  />
+</Grid>
+
             </Grid>
             <Box display='flex' justifyContent='space-between' sx={{mt: 3}}>
                 <Button onClick={cancelEdit} variant='contained' color='inherit'>Cancel</Button>
-                <Button variant='contained' color='success' onClick={handleSubmitData}>Submit</Button>
+                <Button variant='contained' color='success' type="submit">Submit</Button>
             </Box>
+            </form>
         </Box>
     )
 } 

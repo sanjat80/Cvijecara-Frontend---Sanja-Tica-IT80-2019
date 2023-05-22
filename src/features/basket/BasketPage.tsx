@@ -236,7 +236,7 @@ const addItemToCart = (proizvodId: any) => {
         </TableContainer>
         <div>
           <h3 style={{fontWeight:"bold",fontFamily:'Old Standard TT',display: 'inline-block'}}>UKUPN IZNOS VAŠE KORPE: </h3>
-          <h3 style={{fontWeight:"bold",fontFamily:'Old Standard TT',display: 'inline-block',marginLeft:'535px'}}> {totalPrice} RSD</h3>
+          <h3 style={{fontWeight:"bold",fontFamily:'Old Standard TT',display: 'inline-block',marginLeft:'535px'}}> {totalPrice} EUR</h3>
         </div>
         <Button component={Link} to='/checkout' style={{
         marginTop: '50px',
