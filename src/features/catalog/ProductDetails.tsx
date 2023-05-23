@@ -46,7 +46,7 @@ export default function ProductDetails(){
     return(
         <Grid container spacing={6}>
             <Grid item xs={6} border={"black"}>
-                <img src={`/images/${imageFileName}`} alt={product.naziv} style={{width:'100%', border:'black'}}></img>
+                <img src={product.slika} alt={product.naziv} style={{width:'100%', border:'black'}}></img>
             </Grid>
             <Grid item xs={6}>
                 <Typography variant='h3' fontWeight='bold' color='#90EE90'>{product.naziv.toUpperCase()}</Typography>

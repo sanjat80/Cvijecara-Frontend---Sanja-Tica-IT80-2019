@@ -8,6 +8,7 @@ export interface Proizvod{
     pakovanjeId: number;
     kategorijaId: number;
     vrstaId: number;
+    slika:string;
 }
 
 export interface CreateProizvod{
@@ -19,6 +20,7 @@ export interface CreateProizvod{
     pakovanjeId: number;
     kategorijaId: number;
     vrstaId: number;
+    //slika:string;
 }
 
 export interface ProizvodDetalji{
@@ -31,6 +33,7 @@ export interface ProizvodDetalji{
     pakovanje: number;
     kategorija: number;
     vrsta: number;
+    slika:string;
 }
 
 export interface ProductParams{

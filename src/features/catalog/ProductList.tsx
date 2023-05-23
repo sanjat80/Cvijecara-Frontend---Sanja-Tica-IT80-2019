@@ -10,7 +10,7 @@ export default function ProductList({products}:Props){
     return(
         <Grid container spacing={4}>
                 { products && products.map((product,index)=> (
-                    <Grid item xs={4} key={product.naziv}>
+                    <Grid item xs={12} sm={6} md={4} key={product.naziv}>
                     <ProductsCard product={product} index={index}/>
                     </Grid>
                 ))}

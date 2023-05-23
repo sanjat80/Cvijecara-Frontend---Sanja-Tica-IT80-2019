@@ -12,7 +12,6 @@ interface Props{
 
 export default function ProductsCard({product,index}:Props){
   //const user = localStorage.getItem('user');
-    const imageFilenames =["bella epoque.jpg","cherry brandy.jpg","orhideja.jpg","crvene lale.jpg","praline.jpg","narcis.jpg","ljubicice.jpg","bijelerade.jpg","cokolada srce.jpg","zutelale.jpg"];
     const addItemToCart = (proizvodId: any) => {
       const user = localStorage.getItem('user');
       if(!user)
@@ -71,7 +70,7 @@ export default function ProductsCard({product,index}:Props){
     */
 
     return(
-        <Card>
+        <Card style={{marginRight:'20px'}}>
             <CardHeader avatar={
                 <Avatar sx={{backgroundColor:'#90EE90', color:'white'}}>
                     {product.naziv.charAt(0).toUpperCase()}
@@ -83,8 +82,8 @@ export default function ProductsCard({product,index}:Props){
             }}
             />
         <CardMedia
-          sx={{ height: 140, backgroundSize: 'contain'}}
-          image={`/images/${imageFilenames[index % imageFilenames.length]}`}
+          sx={{ height: 400, backgroundSize: 'contain'}}
+          image={product.slika}
           title="green iguana"
         />
         <CardContent>

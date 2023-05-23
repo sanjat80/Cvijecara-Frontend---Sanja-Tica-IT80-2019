@@ -79,7 +79,7 @@ export default function Catalog(){
     },[searchTerm, sortBy])
     if(loading) return <LoadingComponent message="Učitavanje proizvoda..."/>
     return (
-        <Grid container spacing={4}>
+        <Grid container spacing={5}>
             <Grid item xs={3}> 
             <Paper>
             <TextField
@@ -97,7 +97,7 @@ export default function Catalog(){
                   }}
             />
             </Paper>
-            <Paper sx={{mb:2, p:2}} style={{marginTop:'25px'}}>
+            <Paper sx={{mb:2, p:2}} style={{marginTop:'25px', marginRight:'75px'}}>
                 <FormControl component="fieldset">
                     <FormLabel component = "legend">Sortiraj</FormLabel>
                     <RadioGroup value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
