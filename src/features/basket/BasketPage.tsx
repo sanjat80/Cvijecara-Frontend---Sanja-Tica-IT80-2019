@@ -146,7 +146,7 @@ const addItemToCart = (proizvodId: any) => {
   
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
-          backgroundColor: 'Purple',
+          backgroundColor: '#90EE90',
           color: theme.palette.common.white
         },
         [`&.${tableCellClasses.body}`]: {
@@ -186,32 +186,32 @@ const addItemToCart = (proizvodId: any) => {
         {!isUserLoggedIn &&
         ( 
           <>
-          <Typography variant="h3" style={{textAlign:'center',fontFamily:'Old Standard TT',fontWeight:'bold',color:'black'}}>Samo ulogovani korisnici mogu da vide sadržaj svoje korpe...</Typography>
+          <Typography variant="h3" style={{textAlign:'center',fontWeight:'bold',color:'black'}}>Samo ulogovani korisnici mogu da vide sadržaj svoje korpe...</Typography>
           <Divider></Divider>
           <img src="/images/flying.png" alt="not-found" style={{marginLeft:'300px',marginTop:'70px'}}></img>
           </>
           )}
         {isUserLoggedIn && (
           <>
-            <h1 style={{textAlign:'center',color:'purple',fontFamily:'Old Standard TT'}}>SADRŽAJ VAŠE KORPE: </h1>
+            <h1 style={{textAlign:'center',color:'#90EE90'}}>SADRŽAJ VAŠE KORPE: </h1>
         <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
           <TableRow>
-            <StyledTableCell style={{height:'25px', fontWeight:"bold", fontFamily:'Old Standard TT'}}>NAZIV PROIZVODA</StyledTableCell>
-            <StyledTableCell align="center" style={{width:'25px',fontWeight:'bold', fontFamily:'Old Standard TT'}}>KOLICINA</StyledTableCell>
-            <StyledTableCell align="right" style={{fontWeight:"bold",fontFamily:'Old Standard TT'}}>CIJENA</StyledTableCell>
-            <StyledTableCell align="right" style={{fontWeight:"bold",fontFamily:'Old Standard TT'}}>UKLONI</StyledTableCell>
+            <StyledTableCell style={{height:'25px', fontWeight:"bold"}}>NAZIV PROIZVODA</StyledTableCell>
+            <StyledTableCell align="center" style={{width:'25px',fontWeight:'bold'}}>KOLICINA</StyledTableCell>
+            <StyledTableCell align="right" style={{fontWeight:"bold"}}>CIJENA</StyledTableCell>
+            <StyledTableCell align="right" style={{fontWeight:"bold"}}>UKLONI</StyledTableCell>
           </TableRow>
           </TableHead>
           <TableBody>
            {basket.map((item, index)=>(
             <>
             <StyledTableRow key={index}>
-            <StyledTableCell component="th" scope="row" style={{fontWeight:"bold", fontFamily:'Old Standard TT'}}>
+            <StyledTableCell component="th" scope="row" style={{fontWeight:"bold"}}>
               {item.naziv}
             </StyledTableCell>
-            <StyledTableCell align="right" style={{fontWeight:"bold",fontFamily:'Old Standard TT'}}>
+            <StyledTableCell align="right" style={{fontWeight:"bold"}}>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
               <IconButton color='error' style={{marginRight:'4px'}} onClick={()=> handleUpdateBasket(item.proizvodId)}>
                 <Remove/>
@@ -222,7 +222,7 @@ const addItemToCart = (proizvodId: any) => {
               </IconButton>
               </div>
             </StyledTableCell>
-            <StyledTableCell align="right" style={{fontWeight:"bold",fontFamily:'Old Standard TT'}}>{item.cijena}</StyledTableCell>
+            <StyledTableCell align="right" style={{fontWeight:"bold"}}>{item.cijena}</StyledTableCell>
             <StyledTableCell align="right">
               <IconButton color='error' onClick={() => handleDeleteItem(item.proizvodId)}>
                 <Delete/>
@@ -235,17 +235,16 @@ const addItemToCart = (proizvodId: any) => {
         </Table>
         </TableContainer>
         <div>
-          <h3 style={{fontWeight:"bold",fontFamily:'Old Standard TT',display: 'inline-block'}}>UKUPN IZNOS VAŠE KORPE: </h3>
-          <h3 style={{fontWeight:"bold",fontFamily:'Old Standard TT',display: 'inline-block',marginLeft:'535px'}}> {totalPrice} EUR</h3>
+          <h3 style={{fontWeight:"bold",display: 'inline-block'}}>UKUPN IZNOS VAŠE KORPE: </h3>
+          <h3 style={{fontWeight:"bold",display: 'inline-block',marginLeft:'535px'}}> {totalPrice} EUR</h3>
         </div>
         <Button component={Link} to='/checkout' style={{
         marginTop: '50px',
         marginLeft: '530px',
         color: 'white',
-        border: '1px solid purple',
-        backgroundColor: 'purple',
+        border: '1px #90EE90',
+        backgroundColor: '#90EE90',
         marginBottom:'50px',
-        fontFamily:'Old Standard TT',
         fontWeight:"bold"
       }}
       >

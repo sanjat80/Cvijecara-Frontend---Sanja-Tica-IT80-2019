@@ -60,24 +60,24 @@ export default function Header({darkMode, handleThemeChange}:Props){
     }, [dispatch]);
 
     return (
-        <AppBar position="static" sx={{ backgroundColor: "#CBC3E3", color: "white", fontFamily: "Old Standard TT", mb: 6 }}>
+        <AppBar position="static" sx={{ backgroundColor: "#90EE90", color: "white", mb: 6 }}>
             <Toolbar sx={{display:'flex', justifyContent:'space-between',alignItems:'center'}}>
                 <Box display='flex' alignItems='center'>
                 <Typography variant='h6' component={NavLink} 
                 to='/'
-                sx={{color:'inherit',textDecoration:'none', fontFamily:'Old Standard TT', fontWeight:'bold'}}
+                sx={{color:'inherit',textDecoration:'none', fontWeight:'bold'}}
                 >
                     BOTANIKO 
                 </Typography>
                 <Switch checked={darkMode} onChange={handleThemeChange}/>
                 </Box>
-                <List sx={{display:'flex',fontFamily:'Old Standard TT'}}>
+                <List sx={{display:'flex'}}>
                     {midLinks.map(({title, path})=>(
                         <ListItem
                          component={NavLink}
                          to={path}
                          key={path}
-                         sx={{color:'inherit',typography: 'h6', fontFamily:'Old Standard TT',fontWeight:'bold'}}
+                         sx={{color:'inherit',typography: 'h6',fontWeight:'bold'}}
                         >
                             {title.toUpperCase()}
                         </ListItem>
@@ -86,7 +86,7 @@ export default function Header({darkMode, handleThemeChange}:Props){
                     <ListItem
                          component={NavLink}
                          to={'/inventory'}
-                         sx={{color:'inherit',typography: 'h6', fontFamily:'Old Standard TT',fontWeight:'bold'}}
+                         sx={{color:'inherit',typography: 'h6',fontWeight:'bold'}}
                         >
                             INVENTAR
                         </ListItem>}
@@ -103,13 +103,13 @@ export default function Header({darkMode, handleThemeChange}:Props){
                     {user ? (
                         <SignedInMenu/>
                     ):(
-                        <List sx={{display:'flex', fontFamily:'Old Standard TT'}}>
+                        <List sx={{display:'flex'}}>
                         {rightLinks.map(({title, path})=>(
                             <ListItem
                             component={NavLink}
                             to={path}
                             key={path}
-                            sx={{color:'inherit',typography: 'h6', fontFamily:'Old Standard TT', fontWeight:'bold'}}
+                            sx={{color:'inherit',typography: 'h6', fontWeight:'bold'}}
                             >
                                 {title.toUpperCase()}
                             </ListItem>

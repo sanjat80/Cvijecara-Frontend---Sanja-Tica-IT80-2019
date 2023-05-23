@@ -78,7 +78,7 @@ axios.interceptors.response.use(response => {
 
 export const requests = {
     get: (url: string) => axios.get(url).then(responseBody),
-    getFilters:<T> (url: string, params?:any):Promise<AxiosResponse<T>> => axios.get(url,{params}).then(responseBody),
+    getFilters:(url: string, params?:any) => axios.get(url,{params}).then(responseBody),
     post: (url: string, body:{}) => axios.post(url, body).then(responseBody),
     put: (url: string, body:{}) => axios.put(url,body).then(responseBody),
     delete: (url: string) => axios.delete(url).then(responseBody),
@@ -97,7 +97,33 @@ export const requestsWithHeaders = {
 const Catalog = {
     list: () => requests.get('proizvodi'),
     details: (id:number) => requests.get(`proizvodi/proizvodiZaFront/${id}`),
-    listFilters:(params:ProductParams)=>requests.getFilters('proizvodi',params)
+    /*listSearch: (orderBy?:string, searchTerm?:string, kategorija?:string, vrsta?:string)=>{
+      const params={
+        orderBy:orderBy,
+        searchTerm:searchTerm,
+        kategorija:kategorija,
+        vrsta:vrsta
+      }
+
+      return requests.getFilters('proizvodi',{params})
+    }*/
+    listSearch: (
+      orderBy?: string,
+      searchTerm?: string,
+      kategorija?: string,
+      vrsta?: string,
+      queryParams?: string
+    ) => {
+      const params = {
+        orderBy: orderBy,
+        searchTerm: searchTerm,
+        kategorija: kategorija,
+        vrsta: vrsta
+      };
+      const url = queryParams ? `proizvodi${queryParams}` : 'proizvodi';
+      return requests.getFilters(url,{params});
+    }
+    
 }
 
 const TestErrors = {

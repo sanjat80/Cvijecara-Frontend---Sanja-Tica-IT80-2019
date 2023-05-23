@@ -49,35 +49,35 @@ export default function ProductDetails(){
                 <img src={`/images/${imageFileName}`} alt={product.naziv} style={{width:'100%', border:'black'}}></img>
             </Grid>
             <Grid item xs={6}>
-                <Typography variant='h3' fontWeight='bold' color='#CBC3E3'>{product.naziv.toUpperCase()}</Typography>
+                <Typography variant='h3' fontWeight='bold' color='#90EE90'>{product.naziv.toUpperCase()}</Typography>
                 <Divider sx={{mb:2}}/>
-                <Typography variant = 'h4' color='#CBC3E3' fontWeight='bold'>{product.cijena} EUR</Typography>
+                <Typography variant = 'h4' color='#90EE90' fontWeight='bold'>{product.cijena} EUR</Typography>
                 <TableContainer>
                     <Table>
                         <TableBody>
                             <TableRow>
-                                <TableCell style={{ fontWeight: 'bold', color: 'purple' }}>NAZIV</TableCell>
-                                <TableCell style={{ fontWeight: 'bold', color: 'purple' }}>{product.naziv.toUpperCase()}</TableCell>
+                                <TableCell style={{ fontWeight: 'bold', color: 'black' }}>NAZIV</TableCell>
+                                <TableCell style={{ fontWeight: 'bold', color: 'black' }}>{product.naziv.toUpperCase()}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell style={{ fontWeight: 'bold', color: 'purple' }}>VELICINA</TableCell>
-                                <TableCell style={{ fontWeight: 'bold', color: 'purple' }}>{product.velicina.toUpperCase()}</TableCell>
+                                <TableCell style={{ fontWeight: 'bold', color: 'black' }}>VELICINA</TableCell>
+                                <TableCell style={{ fontWeight: 'bold', color: 'black' }}>{product.velicina.toUpperCase()}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell style={{ fontWeight: 'bold', color: 'purple' }}>KOLICINA NA STANJU</TableCell>
-                                <TableCell style={{ fontWeight: 'bold', color: 'purple' }}>{product.zalihe}</TableCell>
+                                <TableCell style={{ fontWeight: 'bold', color: 'black' }}>KOLICINA NA STANJU</TableCell>
+                                <TableCell style={{ fontWeight: 'bold', color: 'black' }}>{product.zalihe}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell style={{ fontWeight: 'bold', color: 'purple' }}>VRSTA</TableCell>
-                                <TableCell style={{ fontWeight: 'bold', color: 'purple' }}>{product.vrsta}</TableCell>
+                                <TableCell style={{ fontWeight: 'bold', color: 'black' }}>VRSTA</TableCell>
+                                <TableCell style={{ fontWeight: 'bold', color: 'black' }}>{product.vrsta}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell style={{ fontWeight: 'bold', color: 'purple' }}>KATEGORIJA</TableCell>
-                                <TableCell style={{ fontWeight: 'bold', color: 'purple' }}>{product.kategorija}</TableCell>
+                                <TableCell style={{ fontWeight: 'bold', color: 'black' }}>KATEGORIJA</TableCell>
+                                <TableCell style={{ fontWeight: 'bold', color: 'black' }}>{product.kategorija}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell style={{ fontWeight: 'bold', color: 'purple' }}>PAKOVANJE</TableCell>
-                                <TableCell style={{ fontWeight: 'bold', color: 'purple' }}>{product.pakovanje}</TableCell>
+                                <TableCell style={{ fontWeight: 'bold', color: 'black' }}>PAKOVANJE</TableCell>
+                                <TableCell style={{ fontWeight: 'bold', color: 'black' }}>{product.pakovanje}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>

@@ -73,13 +73,13 @@ export default function ProductsCard({product,index}:Props){
     return(
         <Card>
             <CardHeader avatar={
-                <Avatar sx={{backgroundColor:'secondary.main', color:'white'}}>
+                <Avatar sx={{backgroundColor:'#90EE90', color:'white'}}>
                     {product.naziv.charAt(0).toUpperCase()}
                 </Avatar>
             }
             title = {product.naziv.toUpperCase()}
             titleTypographyProps={{
-                sx: {fontWeight: 'bold', color:'secondary.main'}
+                sx: {fontWeight: 'bold', color:'#90EE90'}
             }}
             />
         <CardMedia
@@ -88,16 +88,16 @@ export default function ProductsCard({product,index}:Props){
           title="green iguana"
         />
         <CardContent>
-          <Typography gutterBottom color='secondary' variant="h5">
+          <Typography gutterBottom color='#90EE90' variant="h5">
             {product.cijena} EUR
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.#90EE90">
             {product.velicina}
           </Typography>
         </CardContent>
         <CardActions>
           <Button size="small"onClick={() => addItemToCart(product.proizvodId)} >Kupi</Button>
-          <Button component={Link} to={`/catalog/${product.proizvodId}`} size="small" style={{color:'white',backgroundColor:'purple',marginBottom:'12px',alignContent:'center',marginLeft:'10px'}} >Detalji</Button>
+          <Button component={Link} to={`/catalog/${product.proizvodId}`} size="small" style={{color:'white',backgroundColor:'#90EE90',marginBottom:'12px',alignContent:'center',marginLeft:'10px'}} >Detalji</Button>
         </CardActions>
       </Card>
     )
