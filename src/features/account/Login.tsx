@@ -53,7 +53,7 @@ export default function Login() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(images/fs7.jpg)',
+            backgroundImage: 'url(images/login.jpg)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -71,10 +71,10 @@ export default function Login() {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Avatar sx={{ m: 1, bgcolor: '#90EE90' }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5" style={{fontFamily:'Old Standard TT'}}>
+            <Typography component="h1" variant="h5" >
               LOG IN
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit(submitForm)} sx={{ mt: 1 }}>
@@ -84,7 +84,6 @@ export default function Login() {
                 fullWidth
                 label="korisnickoIme"
                 {...register('korisnickoIme', {required:'Korisnicko ime je obavezno!'})}
-                style={{fontFamily:'Old Standard TT'}}
                 error={!!errors.korisnickoIme}
                 helperText={errors?.korisnickoIme?.message as string}
               />
@@ -93,11 +92,6 @@ export default function Login() {
                 fullWidth
                 label="Lozinka"
                 type="password"
-                InputProps={{
-                  style: {
-                    fontFamily: 'Old Standard TT',
-                  },
-                }}
                 {...register('lozinka',{required:'Lozinka je obavezna!'})}
                 error={!!errors.lozinka}
                 helperText={errors?.lozinka?.message as string}
@@ -107,19 +101,19 @@ export default function Login() {
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
-                  style={{backgroundColor:'purple', color:'white'}}
+                  style={{backgroundColor:'#90EE90', color:'white'}}
               >
               Uloguj se
               </LoadingButton>
 
               <Grid container>
                 <Grid item>
-                  <Link href='/register' style={{fontFamily:'Old Standard TT', color:'black', fontWeight:'bold'}}>
+                  <Link href='/register' style={{ color:'black', fontWeight:'bold'}}>
                     {"Nemate nalog? Registrujte se"}
                   </Link>
                 </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5 }} style={{fontFamily:'Old Standard TT', color:'black', fontWeight:'bold'}} />
+              <Copyright sx={{ mt: 5 }} style={{ color:'black', fontWeight:'bold'}} />
             </Box>
           </Box>
         </Grid>

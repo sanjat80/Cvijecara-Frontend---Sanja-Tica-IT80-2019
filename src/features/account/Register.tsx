@@ -62,7 +62,7 @@ export default function Register() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(images/fs7.jpg)',
+            backgroundImage: 'url(images/login.jpg)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -80,10 +80,10 @@ export default function Register() {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Avatar sx={{ m: 1, bgcolor: '#90EE90' }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5" style={{fontFamily:'Old Standard TT'}}>
+            <Typography component="h1" variant="h5">
               REGISTER
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit(data => 
@@ -98,7 +98,6 @@ export default function Register() {
                 fullWidth
                 label="ime"
                 {...register('ime', {required:'Ime je obavezno!'})}
-                style={{fontFamily:'Old Standard TT'}}
                 error={!!errors.ime}
                 helperText={errors?.ime?.message as string}
               />
@@ -106,11 +105,6 @@ export default function Register() {
                 margin="normal"
                 fullWidth
                 label="Prezime"
-                InputProps={{
-                  style: {
-                    fontFamily: 'Old Standard TT',
-                  },
-                }}
                 {...register('prezime',{required:'Prezime je obavezno!'})}
                 error={!!errors.prezime}
                 helperText={errors?.prezime?.message as string}
@@ -119,11 +113,6 @@ export default function Register() {
                 margin="normal"
                 fullWidth
                 label="Adresa"
-                InputProps={{
-                  style: {
-                    fontFamily: 'Old Standard TT',
-                  },
-                }}
                 {...register('adresa')}
                 error={!!errors.adresa}
                 helperText={errors?.adresa?.message as string}
@@ -132,11 +121,6 @@ export default function Register() {
                 margin="normal"
                 fullWidth
                 label="Broj telefona"
-                InputProps={{
-                  style: {
-                    fontFamily: 'Old Standard TT',
-                  },
-                }}
                 {...register('brojTelefona')}
                 error={!!errors.brojTelefona}
                 helperText={errors?.brojTelefona?.message as string}
@@ -145,11 +129,6 @@ export default function Register() {
                 margin="normal"
                 fullWidth
                 label="KorisnickoIme"
-                InputProps={{
-                  style: {
-                    fontFamily: 'Old Standard TT',
-                  },
-                }}
                 {...register('KorisnickoIme',{required:'Korisnicko ime je obavezno!'})}
                 error={!!errors.KorisnickoIme}
                 helperText={errors?.KorisnickoIme?.message as string}
@@ -173,11 +152,6 @@ export default function Register() {
                 fullWidth
                 label="Lozinka"
                 type="password"
-                InputProps={{
-                  style: {
-                    fontFamily: 'Old Standard TT',
-                  },
-                }}
                 {...register('Lozinka',{required:'Lozinka je obavezna!'})}
                 error={!!errors.lozinka}
                 helperText={errors?.Lozinka?.message as string}
@@ -187,19 +161,19 @@ export default function Register() {
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
-                  style={{backgroundColor:'purple', color:'white'}}
+                  style={{backgroundColor:'#90EE90', color:'white'}}
               >
               Registruj se
               </LoadingButton>
 
               <Grid container>
                 <Grid item>
-                  <Link href='/register' style={{fontFamily:'Old Standard TT', color:'black', fontWeight:'bold'}}>
+                  <Link href='/register' style={{color:'black', fontWeight:'bold'}}>
                     {"Već imate nalog? Ulogujte se"}
                   </Link>
                 </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5 }} style={{fontFamily:'Old Standard TT', color:'black', fontWeight:'bold'}} />
+              <Copyright sx={{ mt: 5 }} style={{color:'black', fontWeight:'bold'}} />
             </Box>
           </Box>
         </Grid>
