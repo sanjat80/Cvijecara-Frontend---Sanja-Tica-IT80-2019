@@ -25,28 +25,40 @@ export default function Catalog(){
     const[loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
     const [sortBy, setSortBy] = useState('naziv'); // Set the default sorting parameter
-
-    /*const[filters, setFilters]=useState({
+    const [selectedKategorija, setSelectedKategorija] = useState<string | null>(null);
+    const [selectedVrsta, setSelectedVrsta] = useState<string | null>(null);
+    const[filters, setFilters]=useState({
         kategorije:[],
         vrste:[],
-    })*/
+    })
+
+    const buildQueryParams = () => {
+      const queryParams = new URLSearchParams();
+    
+      if (searchTerm) {
+        queryParams.append("searchTerm", searchTerm);
+      }
+    
+      if (selectedKategorija) {
+        queryParams.append("kategorija", selectedKategorija);
+      }
+    
+      if (selectedVrsta) {
+        queryParams.append("vrsta", selectedVrsta);
+      }
+    
+      // Dodajte sortiranje u queryParams
+      queryParams.append("orderBy", sortBy);
+    
+      return queryParams;
+    };
+    
 
     
-    const loadProducts=()=>{
+    /*const loadProducts=()=>{
         /*const queryParams = searchTerm ? `?searchTerm=${encodeURIComponent(searchTerm)}` : '';
-        const sortParam = sortBy ? `&orderBy=${encodeURIComponent(sortBy)}` : '';*/
-        let queryParams = '';
-
-        if (searchTerm) {
-          queryParams += `searchTerm=${encodeURIComponent(searchTerm)}&`;
-        }
-      
-        if (sortBy) {
-          queryParams += `orderBy=${encodeURIComponent(sortBy)}&`;
-        }
-      
-        queryParams = queryParams.slice(0, -1);
-      
+        const sortParam = sortBy ? `&orderBy=${encodeURIComponent(sortBy)}` : '';
+        const queryParams = buildQueryParams();
         const url = queryParams ? `?${queryParams}` : 'proizvodi';
         
         agent.Catalog.listSearch(undefined,undefined,undefined,undefined,url)
@@ -58,7 +70,72 @@ export default function Catalog(){
         console.error(error);
         setLoading(false);
       });
-    }
+    }*/
+    const loadProducts = () => {
+      const queryParams = new URLSearchParams();
+    
+      if (searchTerm) {
+        queryParams.append("searchTerm", searchTerm);
+      }
+    
+      if (selectedKategorija) {
+        queryParams.append("kategorija", selectedKategorija);
+      }
+    
+      if (selectedVrsta) {
+        queryParams.append("vrsta", selectedVrsta);
+      }
+    
+      queryParams.append("orderBy", sortBy);
+    
+      const url = queryParams ? `?${queryParams}` : 'proizvodi';
+    
+      agent.Catalog.listSearch(undefined, undefined, undefined, undefined, url)
+        .then((products) => {
+          setProducts(products);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error(error);
+          setLoading(false);
+        });
+    };
+
+    const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const filterName = event.target.name;
+      const filterValue = event.target.value;
+    
+      if (filterName === "kategorija") {
+        setSelectedKategorija((prevValue) =>
+          prevValue === filterValue ? null : filterValue
+        );
+      } else if (filterName === "vrsta") {
+        setSelectedVrsta((prevValue) =>
+          prevValue === filterValue ? null : filterValue
+        );
+      }
+      loadProducts();
+    };
+    
+    /*const handleKategorijaFilterChange = (kategorija: string, checked: boolean) => {
+      if (checked) {
+        setSelectedKategorije((prevSelected) => [...prevSelected, kategorija]);
+      } else {
+        setSelectedKategorije((prevSelected) =>
+          prevSelected.filter((selected) => selected !== kategorija)
+        );
+      }
+    };
+    
+    const handleVrstaFilterChange = (vrsta: string, checked: boolean) => {
+      if (checked) {
+        setSelectedVrste((prevSelected) => [...prevSelected, vrsta]);
+      } else {
+        setSelectedVrste((prevSelected) =>
+          prevSelected.filter((selected) => selected !== vrsta)
+        );
+      }
+    };*/
     const loadAllProducts = () => {
         const orderByParam = sortBy ? `?orderBy=${encodeURIComponent(sortBy)}` : '';
         agent.Catalog.listSearch(undefined,undefined,undefined,undefined,orderByParam).then(products => setProducts(products))
@@ -66,17 +143,15 @@ export default function Catalog(){
         .finally(()=>setLoading(false))
       };
     useEffect(()=> {
-       if(searchTerm)
-       {
-        loadProducts()
-       } else {
-        loadAllProducts()
-       }
-       
-       /*agent.Filters.filteri().then(filteri => setFilters(filteri))
+       loadProducts();
+       agent.Filters.filteri().then(filteri => setFilters(filteri))
        .catch(error => console.log(error))
-       .finally(()=>setLoading(false))*/
-    },[searchTerm, sortBy])
+       .finally(()=>setLoading(false))
+    },[searchTerm, sortBy, selectedKategorija, selectedVrsta])
+    useEffect(() => {
+      loadProducts();
+    }, [selectedKategorija, selectedVrsta]);
+    
     if(loading) return <LoadingComponent message="Učitavanje proizvoda..."/>
     return (
         <Grid container spacing={5}>
@@ -110,9 +185,45 @@ export default function Catalog(){
                     </RadioGroup>   
                 </FormControl>
             </Paper>
+            <Paper sx={{mb:2, p:2}}>
+                <FormGroup>
+                    {filters.kategorije.map(kategorija=>(
+                                            <FormControlLabel
+                                            key={kategorija}
+                                            control={
+                                              <Checkbox
+                                                checked={selectedKategorija === kategorija}
+                                                onChange={handleFilterChange}
+                                                name="kategorija"
+                                                value={kategorija}
+                                              />
+                                            }
+                                            label={kategorija}
+                                          />
+                    ))}
+                </FormGroup>
+            </Paper>
+            <Paper sx={{mb:2, p:2}}>
+                <FormGroup>
+                    {filters.vrste.map(vrsta=>(
+                                            <FormControlLabel
+                                            key={vrsta}
+                                            control={
+                                              <Checkbox
+                                                checked={selectedVrsta === vrsta}
+                                                onChange={handleFilterChange}
+                                                name="vrsta"
+                                                value={vrsta}
+                                              />
+                                            }
+                                            label={vrsta}
+                                          />
+                    ))}
+                </FormGroup>
+            </Paper>
             </Grid>
             <Grid item xs={9}> 
-            <ProductList products={products}/>
+            <ProductList products={products}  sortBy={sortBy}/>
             </Grid>
         </Grid>
     )
