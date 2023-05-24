@@ -16,6 +16,19 @@ import Order from "../features/orders/Orders";
 import Orders from "../features/orders/Orders";
 import Inventory from "../features/admin/Inventory";
 import CheckoutWrapper from "../features/checkout/CheckputWrapper";
+import { useSelector } from "react-redux";
+
+function InventoryRoute() {
+    const user = localStorage.getItem('user');
+    const parsedUser = user && JSON.parse(user);
+    const role = parsedUser?.data?.uloga;
+  
+    if (role === 'admin') {
+      return <Inventory />;
+    } else {
+      return <Navigate to="/login" />;
+    }
+  }
 
 export const router = createBrowserRouter([
     {
@@ -34,7 +47,10 @@ export const router = createBrowserRouter([
             {path:'basket', element:<BasketPage/>},
             {path:'checkout',element:<CheckoutWrapper/>},
             {path:'orders',element:<Orders/>},
-            {path:'inventory',element:<Inventory/>},
+            {
+                path:'inventory',
+                element: <InventoryRoute/>
+            },
             {path:'*',element:<Navigate replace to='/not-found'/>} 
         ]
     }

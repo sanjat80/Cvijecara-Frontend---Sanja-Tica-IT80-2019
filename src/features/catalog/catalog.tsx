@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Icon, InputAdornment, Paper, Radio, RadioGroup, TextField } from "@mui/material";
+import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Icon, InputAdornment, Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import { Proizvod } from "../../app/models/proizvod";
 import ProductList from "./ProductList";
 import { useEffect, useState } from "react";
@@ -158,7 +158,7 @@ export default function Catalog(){
             <Grid item xs={3}> 
             <Paper>
             <TextField
-                label='Pretrazi proizvode'
+                label='Pretraži proizvode...'
                 variant = 'outlined'
                 fullWidth
                 value={searchTerm}
@@ -187,6 +187,9 @@ export default function Catalog(){
             </Paper>
             <Paper sx={{mb:2, p:2}}>
                 <FormGroup>
+                <Typography variant="subtitle1" gutterBottom>
+                  Kategorije
+                </Typography>
                     {filters.kategorije.map(kategorija=>(
                                             <FormControlLabel
                                             key={kategorija}
@@ -205,6 +208,9 @@ export default function Catalog(){
             </Paper>
             <Paper sx={{mb:2, p:2}}>
                 <FormGroup>
+                <Typography variant="subtitle1" gutterBottom>
+                  Vrste
+                </Typography>
                     {filters.vrste.map(vrsta=>(
                                             <FormControlLabel
                                             key={vrsta}

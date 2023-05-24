@@ -18,6 +18,7 @@ import { useState } from 'react';
 import { error } from 'console';
 import { Alert, AlertTitle, List, ListItem, ListItemText } from '@mui/material';
 import { toast } from 'react-toastify';
+import { signInUser } from './accountSlice';
 
 
 function Copyright(props: any) {
@@ -37,6 +38,8 @@ export default function Register() {
     const {register, handleSubmit, formState:{errors}} = useForm({
         mode:'onTouched'
     })
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch(); //ovo sam dodala da bi mi registrovanog korisnika odmah preusmjerio kao ulogovanog
     const [validationErrors,setValidationErrors]=useState<string | null>(null);
     /*
         agent.Account.register(data)
@@ -90,6 +93,12 @@ export default function Register() {
               agent.Account.register(data)
               .then(() => {
                 toast.success('Registration successful!');
+                const credentials = {
+                  KorisnickoIme: data.KorisnickoIme,
+                  Lozinka: data.Lozinka
+                };
+                dispatch(signInUser(credentials));
+                navigate('/catalog');
               })
               .catch(error => setValidationErrors(error)))} sx={{ mt: 1 }}>
               <TextField

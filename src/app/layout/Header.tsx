@@ -39,20 +39,17 @@ export default function Header({darkMode, handleThemeChange}:Props){
     //const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     useEffect(() => {
-        // Retrieve the user object from localStorage
         const storedUser = localStorage.getItem('user');
 
         if (storedUser) {
-          // Convert the JSON string to a JavaScript object
           const parsedUser = JSON.parse(storedUser);
-          const token = parsedUser.data.token;
-          const decoded = jwtDecode<decodedToken>(token);
-          const role = decoded.role;
+          const role = parsedUser.data.uloga;
           if(role === 'admin')
           {
             setIsAdmin(true)
-          } 
-          setIsAdmin(false);
+          } else {
+            setIsAdmin(false);
+          }
           
           // Dispatch an action to update the user in the Redux store
           dispatch(setUser(parsedUser));
@@ -82,7 +79,7 @@ export default function Header({darkMode, handleThemeChange}:Props){
                             {title.toUpperCase()}
                         </ListItem>
                     ))}
-                    {user && 
+                    {user && isAdmin && 
                     <ListItem
                          component={NavLink}
                          to={'/inventory'}
