@@ -107,11 +107,11 @@ export default function Catalog(){
     
       if (filterName === "kategorija") {
         setSelectedKategorija((prevValue) =>
-          prevValue === filterValue ? null : filterValue
+        (prevValue === filterValue ? null : filterValue)
         );
       } else if (filterName === "vrsta") {
         setSelectedVrsta((prevValue) =>
-          prevValue === filterValue ? null : filterValue
+          (prevValue === filterValue ? null : filterValue)
         );
       }
       loadProducts();
@@ -150,7 +150,7 @@ export default function Catalog(){
     },[searchTerm, sortBy, selectedKategorija, selectedVrsta])
     useEffect(() => {
       loadProducts();
-    }, [selectedKategorija, selectedVrsta]);
+    }, [selectedKategorija, selectedVrsta, sortBy]);
     
     if(loading) return <LoadingComponent message="Učitavanje proizvoda..."/>
     return (

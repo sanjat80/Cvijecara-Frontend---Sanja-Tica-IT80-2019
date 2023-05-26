@@ -4,6 +4,7 @@ import { router } from "../../router/Routes";
 import { store } from "../store/configureStore";
 import { url } from "inspector";
 import { CreateProizvod, ProductParams, Proizvod } from "../models/proizvod";
+import { KorisnikAdminCreate, KorisnikAdminUpdate } from "../models/user";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -84,6 +85,7 @@ export const requests = {
     delete: (url: string) => axios.delete(url).then(responseBody),
     postOrder: (url:string) => axios.post(url).then(responseBody),
     putProduct: (url: string,body:{}):Promise<Proizvod> => axios.put(url,body).then(responseBody),
+    getUser:(url:string, body:{})=>axios.get(url,body).then(responseBody)
 }
 
 export const requestsWithHeaders = {
@@ -235,6 +237,25 @@ const Filters ={
   filteri: ()=> requests.get('proizvodi/filteri')
 }
 
+const User = {
+  getCurrentUser: (korisnickoIme:string)=>requests.get(`korisnici/profil/${korisnickoIme}`),
+  getAllusers: () => requests.get('korisnici'),
+  getAllType:()=> requests.get('tipoviKorisnika/tipoviKorisnikaId'),
+  createUser: (user:KorisnikAdminCreate, headers={}) =>{
+    const config = { headers: { ...defaultHeaders, ...headers }}
+    return requestsWithHeaders.post('korisnici',user, config)
+  },
+  updateUser: (user:KorisnikAdminUpdate, headers={}) => {
+    //const { proizvodId, ...productData } = product;
+    const config = { headers: { ...defaultHeaders, ...headers } };
+    return requestsWithHeaders.put(`korisnici`, user,config)},
+  deleteUser:(id:number,headers={})=>{
+      const config = { headers: { ...defaultHeaders, ...headers } };
+      return requestsWithHeaders.delete(`korisnici/${id}`,config)
+    },
+
+}
+
 const Admin ={
   createProduct: (product:CreateProizvod, headers={}) =>{
     const config = { headers: { ...defaultHeaders, ...headers }}
@@ -278,7 +299,8 @@ const agent = {
     Categories,
     Admin,
     Payments,
-    Filters
+    Filters,
+    User
 }
 
 export default agent;

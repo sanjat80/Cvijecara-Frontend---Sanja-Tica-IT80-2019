@@ -17,10 +17,10 @@ const Gallery = () => {
       </div>
       <div style={{ position: 'absolute', top: '65%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor: 'white', padding: '20px', borderRadius: '10px',boxShadow: '0px 0px 10px 1px #000000'
  }}>
-        <Typography variant='h4' align='center' style={{ fontWeight: 'bold', color: 'black' ,fontFamily:'Old Standard TT'}}>
-          Dobrodošli u <i>BOTANIKO...</i>
+        <Typography variant='h4' align='center' style={{ fontWeight: 'bold', color: 'black'}}>
+          Dobrodošli u <i>BOTANIKO</i>
         </Typography>
-        <Typography variant='h4' align='center' style={{ fontWeight: 'bold', color: 'black' ,fontFamily:'Old Standard TT'}}>
+        <Typography variant='h4' align='center' style={{ fontWeight: 'bold', color: 'black'}}>
             Pronađite najljepše poklone za sve važne prilike na jednom mjestu
         </Typography>
       </div>

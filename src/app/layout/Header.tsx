@@ -87,6 +87,14 @@ export default function Header({darkMode, handleThemeChange}:Props){
                         >
                             INVENTAR
                         </ListItem>}
+                    {user && isAdmin && 
+                        <ListItem
+                        component={NavLink}
+                        to={'/admin'}
+                        sx={{color:'inherit',typography: 'h6',fontWeight:'bold'}}
+                       >
+                           ADMIN
+                       </ListItem>}
                 </List>
                 
                 <Box display='flex' alignItems='center'>

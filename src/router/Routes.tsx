@@ -17,6 +17,8 @@ import Orders from "../features/orders/Orders";
 import Inventory from "../features/admin/Inventory";
 import CheckoutWrapper from "../features/checkout/CheckputWrapper";
 import { useSelector } from "react-redux";
+import Profile from "../features/profile/Profile";
+import Admin from "../features/admin/Admin";
 
 function InventoryRoute() {
     const user = localStorage.getItem('user');
@@ -51,6 +53,8 @@ export const router = createBrowserRouter([
                 path:'inventory',
                 element: <InventoryRoute/>
             },
+            {path:'user',element:<Profile/>},
+            {path:'admin',element:<Admin/>},
             {path:'*',element:<Navigate replace to='/not-found'/>} 
         ]
     }

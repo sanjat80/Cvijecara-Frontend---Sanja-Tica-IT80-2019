@@ -45,6 +45,7 @@ export default function SignedInMenu() {
         TransitionComponent={Fade}
       >
         <MenuItem component={Link} to='/orders'>Moje porudzbine</MenuItem>
+        <MenuItem component={Link} to='/user'>Moj profil</MenuItem>
         <MenuItem onClick={()=> dispatch(signOut())}>Logout</MenuItem>
       </Menu>
     </>
