@@ -100,11 +100,12 @@ export default function UserForm({user, cancelEdit, tipovi}:Props) {
           if (user) {
             agent.User.updateUser(userData as KorisnikAdminUpdate)
               .then((response: KorisnikAdminUpdate) => {
-                console.log('User updated:', response);
+                toast.success('Korisnik uspjesno azuriran!')
+                console.log('Korisnik azuriran:', response);
                 cancelEdit();
               })
               .catch((error: any) => {
-                console.log('Error updating product:', error);
+                console.log('Greska prilikom azuriranja korisnika:', error);
               });
           } else {
             agent.User.createUser(userData as KorisnikAdminCreate)
@@ -126,7 +127,7 @@ export default function UserForm({user, cancelEdit, tipovi}:Props) {
     return (
         <Box component={Paper} sx={{p: 4}}>
             <Typography variant="h4" gutterBottom sx={{mb: 4}}>
-                Detalji o korisniku
+                Detalji 
             </Typography>
             <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmitData(e)}>
             <Grid container spacing={3}>

@@ -1,30 +1,24 @@
 import { Typography, Grid, Paper, Box, Button } from "@mui/material";
-import { Control, FieldValues, useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import AppTextInput from "../../app/components/AppTextInput";
-import { CreateProizvod, Proizvod } from "../../app/models/proizvod";
 import { useEffect } from "react";
-import AppSelectList from "../../app/components/AppSelectList";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { updateValidationSchema, createValidationSchema } from "./productValidation";
 import agent from "../../app/api/agent";
-import * as yup from 'yup';
 import { toast } from "react-toastify";
+import { KategorijaCreate, KategorijaUpdate } from "../../app/models/kategorija";
+import { VrstaCreate, VrstaUpdate } from "../../app/models/vrsta";
 interface Props{
-    product?: Proizvod;
+    vrsta?: VrstaUpdate
     cancelEdit: ()=> void;
-    vrste: number[];
-    kategorije: number[];
-    pakovanja: number[];
     //errors: any
     //validationSchema: yup.ObjectSchema<any>;
 }
 
 
-export default function ProductForm({product, cancelEdit, vrste, kategorije, pakovanja}:Props) {
+export default function TypeForm({vrsta, cancelEdit}:Props) {
     /*const isUpdateAction = !!product;
     validationSchema = isUpdateAction ? updateValidationSchema : createValidationSchema*/
     const { control, reset } = useForm<FieldValues>({
-        defaultValues:product
+        defaultValues:vrsta
     });
 
     /*function handleSubmitData(data:FieldValues, event: React.FormEvent<HTMLFormElement>){
@@ -85,32 +79,25 @@ export default function ProductForm({product, cancelEdit, vrste, kategorije, pak
         try {
           const formData = new FormData(event.currentTarget);
       
-          const productData: Proizvod | CreateProizvod = {
-            proizvodId: product ? formData.get('proizvodId') as unknown as number : undefined,
-            naziv: formData.get('naziv') as string,
-            cijena: formData.get('cijena') as unknown as number,
-            valuta: formData.get('valuta') as string,
-            velicina: formData.get('velicina') as string,
-            zalihe: formData.get('zalihe') as unknown as number,
-            pakovanjeId: formData.get('pakovanjeId') as unknown as number,
-            kategorijaId: formData.get('kategorijaId') as unknown as number,
-            vrstaId: formData.get('vrstaId') as unknown as number,
+          const vrstaData: VrstaUpdate | VrstaCreate = {
+            vrstaId : vrsta ? formData.get('vrstaId') as unknown as number : undefined,
+            naziv: formData.get('naziv') as unknown as string,
           };
       
-          if (product) {
-            agent.Admin.updateProduct(productData as Proizvod)
-              .then((response: Proizvod) => {
-                toast.success('Proizvod uspjesno azuriran!')
-                console.log('Proizvod uspjesno azuriran:', response);
+          if (vrsta) {
+            agent.Type.updateVrsta(vrstaData as VrstaUpdate)
+              .then((response: VrstaUpdate) => {
+                console.log('Vrsta azurirana:', response);
+                toast.success('Vrsta azurirana!')
                 cancelEdit();
               })
               .catch((error: any) => {
-                console.log('Greska prilikom azuriranja proizvoda:', error);
+                console.log('Greska prilikom azuriranja vrste:', error);
               });
           } else {
-            agent.Admin.createProduct(productData as CreateProizvod)
-              .then((response: Proizvod) => {
-                toast.success('Proizvod uspjesno dodat');
+            agent.Type.createVrsta(vrstaData as VrstaCreate)
+              .then((response:VrstaUpdate) => {
+                toast.success('Vrsta uspjesno dodata!');
                 cancelEdit();
               });
           }
@@ -122,8 +109,8 @@ export default function ProductForm({product, cancelEdit, vrste, kategorije, pak
     
 
     useEffect(()=>{
-        if (product) reset(product);
-    },[product, reset])
+        if (vrsta) reset(vrsta);
+    },[vrsta, reset])
     return (
         <Box component={Paper} sx={{p: 4}}>
             <Typography variant="h4" gutterBottom sx={{mb: 4}}>
@@ -131,49 +118,15 @@ export default function ProductForm({product, cancelEdit, vrste, kategorije, pak
             </Typography>
             <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmitData(e)}>
             <Grid container spacing={3}>
-            {product ? (
+            {vrsta ? (
                 <Grid item xs={12} sm={12}>
-                    <AppTextInput control={control} name='proizvodId' label='Id proizvoda' />
+                    <AppTextInput control={control} name='vrstaId' label='Id vrste' />
                 </Grid>
                 ) : null}
-                <Grid item xs={12} sm={12}>
-                    <AppTextInput control={control} name='naziv' label='Naziv proizvoda' />
-                </Grid>
                 <Grid item xs={12} sm={6}>
-                    <AppTextInput control={control} name='cijena' label='Cijena' />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <AppTextInput control={control} name='valuta' label='Valuta' />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <AppTextInput control={control} name='velicina' label='Velicina' />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <AppTextInput control={control} name='zalihe' label='Zalihe' />
+                    <AppTextInput control={control} name='naziv' label='Naziv' />
                 </Grid>
                 <Grid item xs={12}>
-  <AppSelectList
-    control={control}
-    name="pakovanjeId"
-    label="Pakovanje"
-    items={pakovanja}
-  />
-</Grid>
-<Grid item xs={12}>
-  <AppSelectList
-    control={control}
-    name="kategorijaId"
-    label="Kategorija"
-    items={kategorije}
-  />
-</Grid>
-<Grid item xs={12}>
-  <AppSelectList
-    control={control}
-    name="vrstaId"
-    label="Vrste"
-    items={vrste}
-  />
 </Grid>
 
             </Grid>

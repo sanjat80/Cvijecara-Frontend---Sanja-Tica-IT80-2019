@@ -68,7 +68,7 @@ export default function Inventory() {
         <>
             <Box display='flex' justifyContent='space-between'>
                 <Typography sx={{ p: 2 }} variant='h4'>Inventar</Typography>
-                <Button onClick={()=> setEditMode(true)} sx={{ m: 2 }} size='large' variant='contained'>Dodaj</Button>
+                <Button onClick={()=> setEditMode(true)} sx={{ m: 2 }} size='large' variant='contained' style={{color:'white', backgroundColor:'#90EE90'}}>Dodaj</Button>
             </Box>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">

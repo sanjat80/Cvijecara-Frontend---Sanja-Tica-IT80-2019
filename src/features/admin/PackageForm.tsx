@@ -9,22 +9,20 @@ import { updateValidationSchema, createValidationSchema } from "./productValidat
 import agent from "../../app/api/agent";
 import * as yup from 'yup';
 import { toast } from "react-toastify";
+import { PakovanjeCreation, PakovanjeUpdate } from "../../app/models/pakovanje";
 interface Props{
-    product?: Proizvod;
+    pakovanje?: PakovanjeCreation;
     cancelEdit: ()=> void;
-    vrste: number[];
-    kategorije: number[];
-    pakovanja: number[];
     //errors: any
     //validationSchema: yup.ObjectSchema<any>;
 }
 
 
-export default function ProductForm({product, cancelEdit, vrste, kategorije, pakovanja}:Props) {
+export default function PackageForm({pakovanje, cancelEdit}:Props) {
     /*const isUpdateAction = !!product;
     validationSchema = isUpdateAction ? updateValidationSchema : createValidationSchema*/
     const { control, reset } = useForm<FieldValues>({
-        defaultValues:product
+        defaultValues:pakovanje
     });
 
     /*function handleSubmitData(data:FieldValues, event: React.FormEvent<HTMLFormElement>){
@@ -85,32 +83,29 @@ export default function ProductForm({product, cancelEdit, vrste, kategorije, pak
         try {
           const formData = new FormData(event.currentTarget);
       
-          const productData: Proizvod | CreateProizvod = {
-            proizvodId: product ? formData.get('proizvodId') as unknown as number : undefined,
-            naziv: formData.get('naziv') as string,
+          const packageData: PakovanjeUpdate | PakovanjeCreation = {
+            pakovanjeId: pakovanje ? formData.get('pakovanjeId') as unknown as number : undefined,
+            vrsta: formData.get('vrsta') as string,
             cijena: formData.get('cijena') as unknown as number,
             valuta: formData.get('valuta') as string,
-            velicina: formData.get('velicina') as string,
-            zalihe: formData.get('zalihe') as unknown as number,
-            pakovanjeId: formData.get('pakovanjeId') as unknown as number,
-            kategorijaId: formData.get('kategorijaId') as unknown as number,
-            vrstaId: formData.get('vrstaId') as unknown as number,
+            ukrasi: formData.get('ukrasi') as string,
+            posveta: formData.get('posveta') as unknown as string
           };
       
-          if (product) {
-            agent.Admin.updateProduct(productData as Proizvod)
-              .then((response: Proizvod) => {
-                toast.success('Proizvod uspjesno azuriran!')
-                console.log('Proizvod uspjesno azuriran:', response);
+          if (pakovanje) {
+            agent.Package.updatePakovanje(packageData as PakovanjeUpdate)
+              .then((response: PakovanjeUpdate) => {
+                toast.success('Pakovanje azyurirano!')
+                console.log('Pakovanje azurirano:', response);
                 cancelEdit();
               })
               .catch((error: any) => {
-                console.log('Greska prilikom azuriranja proizvoda:', error);
+                console.log('Greska prilikom azuriranja pakovanja:', error);
               });
           } else {
-            agent.Admin.createProduct(productData as CreateProizvod)
-              .then((response: Proizvod) => {
-                toast.success('Proizvod uspjesno dodat');
+            agent.Package.createPakovanje(packageData as PakovanjeCreation)
+              .then((response:PakovanjeUpdate) => {
+                toast.success('Pakovanje uspjesno dodato');
                 cancelEdit();
               });
           }
@@ -122,8 +117,8 @@ export default function ProductForm({product, cancelEdit, vrste, kategorije, pak
     
 
     useEffect(()=>{
-        if (product) reset(product);
-    },[product, reset])
+        if (pakovanje) reset(pakovanje);
+    },[pakovanje, reset])
     return (
         <Box component={Paper} sx={{p: 4}}>
             <Typography variant="h4" gutterBottom sx={{mb: 4}}>
@@ -131,13 +126,13 @@ export default function ProductForm({product, cancelEdit, vrste, kategorije, pak
             </Typography>
             <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmitData(e)}>
             <Grid container spacing={3}>
-            {product ? (
+            {pakovanje ? (
                 <Grid item xs={12} sm={12}>
-                    <AppTextInput control={control} name='proizvodId' label='Id proizvoda' />
+                    <AppTextInput control={control} name='pakovanjeId' label='Id pakovanja' />
                 </Grid>
                 ) : null}
-                <Grid item xs={12} sm={12}>
-                    <AppTextInput control={control} name='naziv' label='Naziv proizvoda' />
+                <Grid item xs={12} sm={6}>
+                    <AppTextInput control={control} name='vrsta' label='Vrsta' />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <AppTextInput control={control} name='cijena' label='Cijena' />
@@ -146,34 +141,12 @@ export default function ProductForm({product, cancelEdit, vrste, kategorije, pak
                     <AppTextInput control={control} name='valuta' label='Valuta' />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <AppTextInput control={control} name='velicina' label='Velicina' />
+                    <AppTextInput control={control} name='ukrasi' label='Ukrasi' />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <AppTextInput control={control} name='zalihe' label='Zalihe' />
+                    <AppTextInput control={control} name='posveta' label='Posveta' />
                 </Grid>
                 <Grid item xs={12}>
-  <AppSelectList
-    control={control}
-    name="pakovanjeId"
-    label="Pakovanje"
-    items={pakovanja}
-  />
-</Grid>
-<Grid item xs={12}>
-  <AppSelectList
-    control={control}
-    name="kategorijaId"
-    label="Kategorija"
-    items={kategorije}
-  />
-</Grid>
-<Grid item xs={12}>
-  <AppSelectList
-    control={control}
-    name="vrstaId"
-    label="Vrste"
-    items={vrste}
-  />
 </Grid>
 
             </Grid>

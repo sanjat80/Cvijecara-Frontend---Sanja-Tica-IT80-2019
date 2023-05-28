@@ -1,4 +1,4 @@
-import { Navigate, createBrowserRouter } from "react-router-dom";
+import { Navigate, Route, createBrowserRouter } from "react-router-dom";
 import App from "../app/layout/App";
 import HomePage from "../features/home/HomePage";
 import Catalog from "../features/catalog/catalog";
@@ -19,6 +19,11 @@ import CheckoutWrapper from "../features/checkout/CheckputWrapper";
 import { useSelector } from "react-redux";
 import Profile from "../features/profile/Profile";
 import Admin from "../features/admin/Admin";
+import Korisnici from "../features/admin/Korisnici";
+import Pakovanja from "../features/admin/Pakovanja";
+import Kategorije from "../features/admin/Kategorije";
+import Vrste from "../features/admin/Vrste";
+import { ReactNode } from "react";
 
 function InventoryRoute() {
     const user = localStorage.getItem('user');
@@ -31,6 +36,29 @@ function InventoryRoute() {
       return <Navigate to="/login" />;
     }
   }
+
+  function ProtectedRoute({
+    role,
+    authorizedElement,
+    unauthorizedElement,
+    redirectPath
+  }: {
+    role: string;
+    authorizedElement: ReactNode;
+    unauthorizedElement: ReactNode;
+    redirectPath: string;
+  }): JSX.Element {
+    const user = localStorage.getItem('user');
+    const parsedUser = user && JSON.parse(user);
+    const userRole = parsedUser?.data?.uloga;
+  
+    if (userRole === role) {
+      return authorizedElement as JSX.Element;
+    } else {
+      return <Navigate to={redirectPath} />;
+    }
+  }
+  
 
 export const router = createBrowserRouter([
     {
@@ -54,7 +82,46 @@ export const router = createBrowserRouter([
                 element: <InventoryRoute/>
             },
             {path:'user',element:<Profile/>},
-            {path:'admin',element:<Admin/>},
+            {path:'admin',element: (
+              <ProtectedRoute
+                role="admin"
+                authorizedElement={<Admin/>}
+                unauthorizedElement={<Navigate to="/login" replace />}
+                redirectPath="/login"
+              />
+            )},
+            {path:'adminUsers',element:(
+              <ProtectedRoute
+                role="admin"
+                authorizedElement={<Korisnici />}
+                unauthorizedElement={<Navigate to="/login" replace />}
+                redirectPath="/login"
+              />
+            )},
+            {path:'adminPackages',element:(
+              <ProtectedRoute
+                role="admin"
+                authorizedElement={<Pakovanja/>}
+                unauthorizedElement={<Navigate to="/login" replace />}
+                redirectPath="/login"
+              />
+            )},
+            {path:'adminCategories',element:(
+              <ProtectedRoute
+                role="admin"
+                authorizedElement={<Kategorije />}
+                unauthorizedElement={<Navigate to="/login" replace />}
+                redirectPath="/login"
+              />
+            )},
+            {path:'adminTypes',element:(
+              <ProtectedRoute
+                role="admin"
+                authorizedElement={<Vrste />}
+                unauthorizedElement={<Navigate to="/login" replace />}
+                redirectPath="/login"
+              />
+            )},
             {path:'*',element:<Navigate replace to='/not-found'/>} 
         ]
     }

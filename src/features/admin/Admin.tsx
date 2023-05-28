@@ -1,159 +1,53 @@
-import { Typography, Button, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Box } from "@mui/material";
-import { Edit, Delete } from "@mui/icons-material";
-import { useState, useEffect } from "react";
-import agent from "../../app/api/agent";
-import LoadingComponent from "../../app/layout/LoadingComponent";
-import { createValidationSchema, updateValidationSchema } from "./productValidation";
-import { KorisnikAdminUpdate } from "../../app/models/user";
-import UserForm from "./UserForm";
+import { Button,  Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
+export default function Admin(){
+    const [admin, setAdmin]= useState("");
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
 
-export default function Admin() {
-    const [users, setUsers] = useState<KorisnikAdminUpdate[]>([]);
-    const[loading, setLoading] = useState(false);
-    const [editMode, setEditMode] = useState(false);
-    const [selectedUser, setSelectedUser] = useState<KorisnikAdminUpdate| undefined>(undefined);
-    const [tipovi, setTipovi] = useState<number[]>([]);
-    const [showTable, setShowTable] = useState(true);
-
-    //const [errors, setErrors] = useState(FieldErrors<Proizvod>)
-    const [target, setTarget] = useState(0);
-    let validationSchema;
-    function toggleTable() {
-        setShowTable(!showTable);
-      }
-
-    function handleSelectUser(user: KorisnikAdminUpdate){
-        setSelectedUser(user);
-        setEditMode(true);
-    }
-    function handleDeleteUser(id:number){
-        setLoading(true);
-        setTarget(id);
-        agent.User.deleteUser(id)
-        .then(()=>{
-            setUsers(prevUsers => prevUsers.filter(user => user.korisnikId !== id));
-        })
-        .catch(error=>console.log(error))
-        .finally(() => {
-            setLoading(false);
-          });
-    }
-
-    function cancelEdit(){
-        if(selectedUser) setSelectedUser(undefined);
-        setEditMode(false);
-    }
-
-    useEffect(()=> {
-       agent.User.getAllusers().then((users:any) => setUsers(users))
-       .catch((error:any) => console.log(error))
-       .finally(()=>setLoading(false));
-       agent.User.getAllType()
-       .then((typesData:number[])=>{
-        setTipovi(typesData);
-       })
-    }, [])
-
-    if(editMode) return <UserForm user={selectedUser} cancelEdit={cancelEdit} tipovi={tipovi}/>
-
-    if(loading) return <LoadingComponent message="Učitavanje..."/>
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          const username = parsedUser.data.korisnickoIme;
+          setAdmin(username);
+        }
+    }, []);
     return (
         <>
-            <Box display='flex' justifyContent='space-between'>
-                <Typography sx={{ p: 2 }} variant='h4'>KORISNICI</Typography>
-                <Button onClick={toggleTable} sx={{ m: 2 }} size='large' variant='contained'>
-                {showTable ? 'Sakrij' : 'Prikaži'} korisnike
-                </Button>
-                <Button onClick={()=> setEditMode(true)} sx={{ m: 2 }} size='large' variant='contained'>Dodaj</Button>
-            </Box>
-            {showTable &&
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell align="left">KorisnikId</TableCell>
-                            <TableCell align="right">Ime</TableCell>
-                            <TableCell align="right">Prezime</TableCell>
-                            <TableCell align="center">Adresa</TableCell>
-                            <TableCell align="center">Broj telefona</TableCell>
-                            <TableCell align="center">Status korisnika</TableCell>
-                            <TableCell align="center">Korisnicko ime</TableCell>
-                            <TableCell align="center">Email</TableCell>
-                            <TableCell align="right">Tip korisnika</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {users.map((user) => (
-                            <TableRow
-                                key={user.korisnikId}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {user.korisnikId}
-                                </TableCell>
-                                <TableCell align="right">{user.ime}</TableCell>
-                                <TableCell align="center">{user.prezime}</TableCell>
-                                <TableCell align="center">{user.adresa}</TableCell>
-                                <TableCell align="center">{user.brojTelefona}</TableCell>
-                                <TableCell align="center">{user.statusKorisnika}</TableCell>
-                                <TableCell align="center">{user.korisnickoIme}</TableCell>
-                                <TableCell align="center">{user.email}</TableCell>
-                                <TableCell align="center">{user.tipId}</TableCell>
-                                <TableCell align="right">
-                                    <Button onClick={()=>handleSelectUser(user)} startIcon={<Edit />} />
-                                    <Button startIcon={<Delete />} color='error' onClick={()=>handleDeleteUser(user.korisnikId)} />
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>}
-            <Box display='flex' justifyContent='space-between'>
-                <Typography sx={{ p: 2 }} variant='h4'>KORISNICI</Typography>
-                <Button onClick={()=> setEditMode(true)} sx={{ m: 2 }} size='large' variant='contained'>Dodaj</Button>
-            </Box>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell align="left">KorisnikId</TableCell>
-                            <TableCell align="right">Ime</TableCell>
-                            <TableCell align="right">Prezime</TableCell>
-                            <TableCell align="center">Adresa</TableCell>
-                            <TableCell align="center">Broj telefona</TableCell>
-                            <TableCell align="center">Status korisnika</TableCell>
-                            <TableCell align="center">Korisnicko ime</TableCell>
-                            <TableCell align="center">Email</TableCell>
-                            <TableCell align="right">Tip korisnika</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {users.map((user) => (
-                            <TableRow
-                                key={user.korisnikId}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {user.korisnikId}
-                                </TableCell>
-                                <TableCell align="right">{user.ime}</TableCell>
-                                <TableCell align="center">{user.prezime}</TableCell>
-                                <TableCell align="center">{user.adresa}</TableCell>
-                                <TableCell align="center">{user.brojTelefona}</TableCell>
-                                <TableCell align="center">{user.statusKorisnika}</TableCell>
-                                <TableCell align="center">{user.korisnickoIme}</TableCell>
-                                <TableCell align="center">{user.email}</TableCell>
-                                <TableCell align="center">{user.tipId}</TableCell>
-                                <TableCell align="right">
-                                    <Button onClick={()=>handleSelectUser(user)} startIcon={<Edit />} />
-                                    <Button startIcon={<Delete />} color='error' onClick={()=>handleDeleteUser(user.korisnikId)} />
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+        <h1 style={{fontWeight:'bold', color:'#90EE90', textAlign:'center'}}>ADMIN PANEL</h1>
+        <h3>Admin:</h3>
+        <h3 style={{fontWeight:'bold', color:'#90EE90'}}>{admin.toLocaleUpperCase()}</h3>
+        <div style={{ background: 'transparent', border: '1px solid black', padding: '10px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{marginBottom:'40px'}}>
+            <h1 style={{marginTop:'100px', marginLeft:'80px'}}>1. KORISNICI</h1>
+            <Link to="/adminUsers">
+                <Button style={{ color: 'white', backgroundColor: '#90EE90' , marginLeft:'80px'}}>UREDI</Button>
+            </Link>
+        </div>
+        <div>
+            <h1 style={{marginTop:'100px', marginRight:'80px'}}>2. PAKOVANJA</h1>
+            <Link to="/adminPackages">
+                <Button style={{ color: 'white', backgroundColor: '#90EE90', marginRight:'80px' }}>UREDI</Button>
+            </Link>
+        </div>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{marginBottom:'60px'}}>
+            <h1 style={{marginTop:'100px', marginLeft:'80px'}}>3. KATEGORIJE</h1>
+            <Link to="/adminCategories">
+                <Button style={{ color: 'white', backgroundColor: '#90EE90', marginLeft:'80px' }}>UREDI</Button>
+            </Link>
+        </div>
+        <div>
+            <h1 style={{marginTop:'100px', marginRight:'160px',}}>4. VRSTE</h1>
+            <Link to="/adminTypes">
+                <Button style={{ color: 'white', backgroundColor: '#90EE90' }}>UREDI</Button>
+            </Link>
+        </div>
+        </div>
+        </div>
         </>
     )
 }

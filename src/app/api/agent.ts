@@ -5,6 +5,9 @@ import { store } from "../store/configureStore";
 import { url } from "inspector";
 import { CreateProizvod, ProductParams, Proizvod } from "../models/proizvod";
 import { KorisnikAdminCreate, KorisnikAdminUpdate } from "../models/user";
+import { PakovanjeCreation, PakovanjeUpdate } from "../models/pakovanje";
+import { KategorijaCreate, KategorijaUpdate } from "../models/kategorija";
+import { VrstaCreate, VrstaUpdate } from "../models/vrsta";
 
 const sleep = () => new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -214,7 +217,21 @@ const Order ={
 }
 
 const Type = {
-  getAllVrsta: ()=> requests.get('vrste/vrsteId')
+  getAllVrsta: ()=> requests.get('vrste/vrsteId'),
+  getAllVrste: ()=> requests.get('vrste'),
+  createVrsta: (vrsta: VrstaCreate, headers={}) =>{
+    const config = { headers: { ...defaultHeaders, ...headers }}
+    return requestsWithHeaders.post('vrste',vrsta, config)
+  },
+  updateVrsta: (vrsta: VrstaUpdate, headers={}) => {
+    //const { proizvodId, ...productData } = product;
+    const config = { headers: { ...defaultHeaders, ...headers } };
+    return requestsWithHeaders.put(`vrste`, vrsta,config)},
+  deleteVrsta:(id:number,headers={})=>{
+      const config = { headers: { ...defaultHeaders, ...headers } };
+      return requestsWithHeaders.delete(`vrste/${id}`,config)
+    },
+
 }
 
 const Payments = {
@@ -222,7 +239,22 @@ const Payments = {
 }
 
 const Package = {
-  getAllPakovanja: ()=> requests.get('pakovanja/pakovanjaId')
+  getAllPakovanja: ()=> requests.get('pakovanja/pakovanjaId'),
+  getPakovanje:()=>requests.get('pakovanja'),
+  createPakovanje: (pakovanje: PakovanjeCreation, headers={}) =>{
+    const config = { headers: { ...defaultHeaders, ...headers }}
+    return requestsWithHeaders.post('pakovanja',pakovanje, config)
+  },
+  updatePakovanje: (pakovanje:PakovanjeUpdate, headers={}) => {
+    //const { proizvodId, ...productData } = product;
+    const config = { headers: { ...defaultHeaders, ...headers } };
+    return requestsWithHeaders.put(`pakovanja`, pakovanje,config)},
+  deletePakovanje:(id:number,headers={})=>{
+      const config = { headers: { ...defaultHeaders, ...headers } };
+      return requestsWithHeaders.delete(`pakovanja/${id}`,config)
+    },
+
+
 }
 
 function createFormData(item:any){
@@ -272,7 +304,21 @@ const Admin ={
 }
 
 const Categories ={
-  getAllKategorije: ()=>requests.get('kategorije/kategorijeId')
+  getAllKategorije: ()=>requests.get('kategorije/kategorijeId'),
+  getAllCategories: ()=>requests.get('kategorije'),
+  createCategory: (category: KategorijaCreate, headers={}) =>{
+    const config = { headers: { ...defaultHeaders, ...headers }}
+    return requestsWithHeaders.post('kategorije',category, config)
+  },
+  updateCategory: (category:KategorijaUpdate, headers={}) => {
+    //const { proizvodId, ...productData } = product;
+    const config = { headers: { ...defaultHeaders, ...headers } };
+    return requestsWithHeaders.put(`kategorije`, category,config)},
+  deleteCategory:(id:number,headers={})=>{
+      const config = { headers: { ...defaultHeaders, ...headers } };
+      return requestsWithHeaders.delete(`kategorije/${id}`,config)
+    },
+
 }
 
 const Account = {
