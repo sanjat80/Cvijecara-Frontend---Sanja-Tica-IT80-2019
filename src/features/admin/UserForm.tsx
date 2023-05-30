@@ -136,6 +136,17 @@ export default function UserForm({user, cancelEdit, tipovi}:Props) {
                     <AppTextInput control={control} name='korisnikId' label='Id korisnika' />
                 </Grid>
                 ) : null}
+                {user &&
+                <>
+                <Grid item xs={12} sm={6}>
+                    <AppTextInput control={control} name='statusKorisnika' label='Status korisnika' />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <AppSelectList control={control} name='tipId' label='Tip korisnika' items={tipovi}/>
+                </Grid>
+                </>}
+                {!user &&
+                <>
                 <Grid item xs={12} sm={12}>
                     <AppTextInput control={control} name='ime' label='Ime' />
                 </Grid>
@@ -163,7 +174,9 @@ export default function UserForm({user, cancelEdit, tipovi}:Props) {
                 <Grid item xs={12} sm={6}>
                     <AppSelectList control={control} name='tipId' label='Tip korisnika' items={tipovi}/>
                 </Grid>
-</Grid>
+             </>
+             }
+             </Grid>
             <Box display='flex' justifyContent='space-between' sx={{mt: 3}}>
                 <Button onClick={cancelEdit} variant='contained' color='inherit'>Cancel</Button>
                 <Button variant='contained' color='success' type="submit">Submit</Button>

@@ -20,7 +20,7 @@ export interface CreateProizvod{
     pakovanjeId: number;
     kategorijaId: number;
     vrstaId: number;
-    //slika:string;
+    slika:string;
 }
 
 export interface ProizvodDetalji{

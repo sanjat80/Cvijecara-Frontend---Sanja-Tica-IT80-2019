@@ -84,7 +84,7 @@ const addItemToCart = (proizvodId: any) => {
   const itemToUpdate: StavkeKorpe | undefined = updatedBasket.find(item => item.proizvodId === proizvodId);
 
   if (itemToUpdate && itemToUpdate.kolicina > 0) {
-    agent.Basket.updateKolicinaForPlus(proizvodId)
+    agent.Basket.addItemToCurrentUser(proizvodId)
       .then(response => {
           const updatedBasket = basket.map(item =>
             item.proizvodId === response.proizvodId
@@ -106,6 +106,7 @@ const addItemToCart = (proizvodId: any) => {
     const itemTotalPrice = item.cijena;
     return acc + itemTotalPrice;
   }, 0);
+  const totalPriceRounded = totalPrice.toFixed(2);
   /*const handleUpdateItem = (productId: number) => {
     agent.Basket.updateKolicinaOrRemoveItem(productId)
       .then(response => {
@@ -236,7 +237,7 @@ const addItemToCart = (proizvodId: any) => {
         </TableContainer>
         <div>
           <h3 style={{fontWeight:"bold",display: 'inline-block'}}>UKUPN IZNOS VAŠE KORPE: </h3>
-          <h3 style={{fontWeight:"bold",display: 'inline-block',marginLeft:'535px'}}> {totalPrice} EUR</h3>
+          <h3 style={{fontWeight:"bold",display: 'inline-block',marginLeft:'535px'}}> {totalPriceRounded} EUR</h3>
         </div>
         <Button component={Link} to='/checkout' style={{
         marginTop: '50px',

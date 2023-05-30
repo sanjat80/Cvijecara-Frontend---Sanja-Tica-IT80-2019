@@ -95,6 +95,7 @@ export default function ProductForm({product, cancelEdit, vrste, kategorije, pak
             pakovanjeId: formData.get('pakovanjeId') as unknown as number,
             kategorijaId: formData.get('kategorijaId') as unknown as number,
             vrstaId: formData.get('vrstaId') as unknown as number,
+            slika: formData.get('slika') as unknown as string
           };
       
           if (product) {
@@ -150,6 +151,9 @@ export default function ProductForm({product, cancelEdit, vrste, kategorije, pak
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <AppTextInput control={control} name='zalihe' label='Zalihe' />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <AppTextInput control={control} name='slika' label='Slika' />
                 </Grid>
                 <Grid item xs={12}>
   <AppSelectList

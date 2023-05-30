@@ -94,14 +94,15 @@ export default function Checkout() {
   }
 
   async function submitOrder(data:FieldValues){
+    console.log('unutar metode submitorder smo')
     setLoading(true);
-    const {...adresa} = data;
+    //const {...adresa} = data;
     if(!stripe || !elements) return;
     try{
       if(basket){
         const cardElement = elements.getElement(CardNumberElement);
         const basketJSON = JSON.parse(basket)
-        const paymentResult = await stripe.confirmCardPayment(basketJSON.clientSecret,{
+        const paymentResult = await stripe.confirmCardPayment(basketJSON?.clientSecret!,{
           payment_method: {
             card: cardElement!,
             billing_details: {
@@ -111,7 +112,7 @@ export default function Checkout() {
         });
         console.log(paymentResult)
         if(paymentResult.paymentIntent?.status === 'succeeded'){
-          agent.Order.createOrder();
+          //agent.Order.createOrder();
           setPaymentSucceeded(true);
           setPaymentMessage('Vasa porudzbina je prihvacena, hvala!');
           setActiveStep(activeStep+1);
@@ -137,10 +138,11 @@ export default function Checkout() {
     {
       agent.Order.updatePorudzbina();
     }
-    else if(activeStep === 2)
+    else
     {
+      console.log('pozvano')
       await submitOrder(data);
-      toast.success('Pozvano')
+      //toast.success('Pozvano')
     }
     setActiveStep(activeStep + 1);
   };
@@ -199,9 +201,7 @@ export default function Checkout() {
               </Typography>
               {paymentSucceeded ? (
                  <Typography variant="subtitle1">
-                 Your order number is #2001539. We have emailed your order
-                 confirmation, and will send you an update when your order has
-                 shipped.
+                 Uspješno ste poručili željene proizvode! Poslaćemo Vam email kada porudžbina bude isporučena.
                </Typography>
               ):(
                 <Button variant = 'contained' onClick={handleBack}> Vrati se nazad</Button>
@@ -216,7 +216,7 @@ export default function Checkout() {
                   Back
               </Button>
                 )}
-                 <Button type='submit' style={{marginTop:'24px'}}>
+                 <Button type='submit' style={{marginTop:'24px'}} onClick={handleNext}>
                 {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
                 </Button>
               </Box>

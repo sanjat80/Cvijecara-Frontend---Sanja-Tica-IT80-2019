@@ -14,18 +14,13 @@ interface Props{
 }
 
 export default function PaymentForm({cardState, onCardInputChange}:Props) {
-  const {control} = useFormContext();
-  
-
-    return (
+  const {control} = useFormContext();    
+  return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         Payment method
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <AppTextInput name='nameOnCard' label='Name on card' control={control}/>
-        </Grid>
         <Grid item xs={12} md={6}>
           <TextField
             onChange={onCardInputChange}

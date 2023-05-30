@@ -1,6 +1,16 @@
-import { Button,  Typography } from "@mui/material";
+import { Button,  Typography, styled } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
+import backgroundImage from "../../backgroundImage/pozadina3.jpg"
+const ProfileContainer = styled('div')({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    height: '100vh',
+  });
 
 export default function Admin(){
     const [admin, setAdmin]= useState("");
@@ -18,7 +28,7 @@ export default function Admin(){
         <h1 style={{fontWeight:'bold', color:'#90EE90', textAlign:'center'}}>ADMIN PANEL</h1>
         <h3>Admin:</h3>
         <h3 style={{fontWeight:'bold', color:'#90EE90'}}>{admin.toLocaleUpperCase()}</h3>
-        <div style={{ background: 'transparent', border: '1px solid black', padding: '10px' }}>
+        <div style={{ background: 'transparent', border: '2px solid lightgreen', padding: '10px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div style={{marginBottom:'40px'}}>
             <h1 style={{marginTop:'100px', marginLeft:'80px'}}>1. KORISNICI</h1>

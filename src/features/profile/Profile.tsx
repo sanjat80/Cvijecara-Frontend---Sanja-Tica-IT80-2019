@@ -1,17 +1,11 @@
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Collapse, Divider, IconButton, IconButtonProps, Typography, styled } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { KorisnikProfile } from "../../app/models/user";
+import { KorisnikAdminUpdate, KorisnikProfile } from "../../app/models/user";
 import { useEffect, useState } from "react";
 import agent from "../../app/api/agent";
-import { red } from "@mui/material/colors";
-import React from "react";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import backgroundImage from "../../backgroundImage/pozadina1.jpg"
-import AppTextBox from "../../app/components/TextBox";
+import backgroundImage from "../../backgroundImage/pozadina4.jpg"
+
 
 const ProfileContainer = styled('div')({
   display: 'flex',
@@ -24,7 +18,7 @@ const ProfileContainer = styled('div')({
 export default function Profile()
 {
     
-    const [user, setUser] = useState<KorisnikProfile | null>();
+    const [user, setUser] = useState<KorisnikAdminUpdate>();
 
     useEffect(()=>{
         const storedUser = localStorage.getItem('user')
@@ -35,7 +29,7 @@ export default function Profile()
             setUser(response)
         })
         .catch(error => console.log(error.response))
-    })
+    },[])
     return(
       <ProfileContainer>
       <Typography align="center" style={{fontWeight:'bold', fontSize: '24px', border: '4px solid white', padding: '10px', marginTop:'50px', color:'white' }}>MOJ PROFIL</Typography>

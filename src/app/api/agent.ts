@@ -4,7 +4,7 @@ import { router } from "../../router/Routes";
 import { store } from "../store/configureStore";
 import { url } from "inspector";
 import { CreateProizvod, ProductParams, Proizvod } from "../models/proizvod";
-import { KorisnikAdminCreate, KorisnikAdminUpdate } from "../models/user";
+import { KorisnikAdminCreate, KorisnikAdminUpdate, KorisnikRegistration } from "../models/user";
 import { PakovanjeCreation, PakovanjeUpdate } from "../models/pakovanje";
 import { KategorijaCreate, KategorijaUpdate } from "../models/kategorija";
 import { VrstaCreate, VrstaUpdate } from "../models/vrsta";
@@ -235,7 +235,10 @@ const Type = {
 }
 
 const Payments = {
-  createPaymentIntent: () => requests.post('placanje',{})
+  createPaymentIntent: (headers={}) => {
+    const config = { headers: { ...defaultHeaders, ...headers }}
+    return requestsWithHeaders.post('placanje',{}, config)
+  }
 }
 
 const Package = {
@@ -280,11 +283,15 @@ const User = {
   updateUser: (user:KorisnikAdminUpdate, headers={}) => {
     //const { proizvodId, ...productData } = product;
     const config = { headers: { ...defaultHeaders, ...headers } };
-    return requestsWithHeaders.put(`korisnici`, user,config)},
+    return requestsWithHeaders.put(`korisnici/adminUpdate`, user,config)},
   deleteUser:(id:number,headers={})=>{
       const config = { headers: { ...defaultHeaders, ...headers } };
       return requestsWithHeaders.delete(`korisnici/${id}`,config)
     },
+  updateRegistredUser: (user:KorisnikRegistration, headers={})=>{
+    const config = { headers: { ...defaultHeaders, ...headers }}
+    return requestsWithHeaders.put('korisnici/registrovani', user, config);
+  }
 
 }
 
