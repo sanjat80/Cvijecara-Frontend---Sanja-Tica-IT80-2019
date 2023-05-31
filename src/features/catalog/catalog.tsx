@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Icon, InputAdornment, Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Icon, InputAdornment,  Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import { Proizvod } from "../../app/models/proizvod";
 import ProductList from "./ProductList";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import { CheckBox } from "@mui/icons-material";
 import ProductSearch from "./ProductSearch";
 import SearchIcon from '@mui/icons-material/Search';
 import SortIcon from '@mui/icons-material/Sort';
+import Pagination from "./Pagination";
 
 
 
@@ -27,6 +28,8 @@ export default function Catalog(){
     const [sortBy, setSortBy] = useState('naziv'); // Set the default sorting parameter
     const [selectedKategorija, setSelectedKategorija] = useState<string | null>(null);
     const [selectedVrsta, setSelectedVrsta] = useState<string | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(6);
     const[filters, setFilters]=useState({
         kategorije:[],
         vrste:[],
@@ -114,6 +117,7 @@ export default function Catalog(){
           (prevValue === filterValue ? null : filterValue)
         );
       }
+      setCurrentPage(1);
       loadProducts();
     };
     
@@ -152,6 +156,13 @@ export default function Catalog(){
       loadProducts();
     }, [selectedKategorija, selectedVrsta, sortBy]);
     
+    const indexOfLastPost = currentPage*postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = products.slice(indexOfFirstPost, indexOfLastPost);
+    const paginate = (pageNumber:any) => {
+      setCurrentPage(pageNumber)
+    }
+
     if(loading) return <LoadingComponent message="Učitavanje proizvoda..."/>
     return (
         <Grid container spacing={5}>
@@ -229,7 +240,8 @@ export default function Catalog(){
             </Paper>
             </Grid>
             <Grid item xs={9}> 
-            <ProductList products={products}  sortBy={sortBy}/>
+            <ProductList products={currentPosts}  sortBy={sortBy}/>
+            <Pagination postsPerPage={postsPerPage} totalPosts={products.length} currentPage={currentPage} paginate={paginate}></Pagination>
             </Grid>
         </Grid>
     )

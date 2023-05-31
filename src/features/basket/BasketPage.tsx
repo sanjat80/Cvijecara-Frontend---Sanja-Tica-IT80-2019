@@ -253,9 +253,7 @@ const addItemToCart = (proizvodId: any) => {
         </Button>
         <Divider></Divider>
         <div style={{display: "flex"}}>
-            <img src="/images/iris.png" alt='iris' style={{height:"200px",width:"200px", marginRight:"50px",marginTop:"35px"}}/>
-            <img src="/images/lavender.png" alt='lavender' style={{height:"200px",width:"200px",marginLeft:"210px",marginTop:"35px"}}/>
-            <img src="/images/flower.png" alt='flower' style={{height:"200px",width:"200px",marginLeft:"290px",marginTop:"35px"}}/>
+            <img src="/images/logonovi.png" alt='iris' style={{height:"250px",width:"400px", marginRight:"50px",marginTop:"35px", marginLeft:'360px'}}/>
         </div>
           </>
         )}

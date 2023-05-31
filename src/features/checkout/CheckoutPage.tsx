@@ -113,6 +113,7 @@ export default function Checkout() {
         console.log(paymentResult)
         if(paymentResult.paymentIntent?.status === 'succeeded'){
           //agent.Order.createOrder();
+          agent.Basket.deleteAllFromKorpa();
           setPaymentSucceeded(true);
           setPaymentMessage('Vasa porudzbina je prihvacena, hvala!');
           setActiveStep(activeStep+1);
@@ -138,7 +139,7 @@ export default function Checkout() {
     {
       agent.Order.updatePorudzbina();
     }
-    else
+    else if(activeStep === steps.length - 1)
     {
       console.log('pozvano')
       await submitOrder(data);
@@ -216,7 +217,7 @@ export default function Checkout() {
                   Back
               </Button>
                 )}
-                 <Button type='submit' style={{marginTop:'24px'}} onClick={handleNext}>
+                 <Button style={{marginTop:'24px'}} onClick={handleNext}>
                 {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
                 </Button>
               </Box>
