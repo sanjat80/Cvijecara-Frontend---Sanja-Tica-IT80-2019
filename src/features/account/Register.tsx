@@ -93,11 +93,11 @@ export default function Register() {
               agent.Account.register(data)
               .then(() => {
                 toast.success('Registration successful!');
-                const credentials = {
+                /*const credentials = {
                   KorisnickoIme: data.KorisnickoIme,
                   Lozinka: data.Lozinka
                 };
-                dispatch(signInUser(credentials));
+                dispatch(signInUser(credentials));*/
                 navigate('/catalog');
               })
               .catch(error => setValidationErrors(error)))} sx={{ mt: 1 }}>

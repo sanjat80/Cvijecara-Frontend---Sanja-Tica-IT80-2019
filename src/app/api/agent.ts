@@ -204,6 +204,10 @@ const Basket = {
     deleteAllFromKorpa: (headers={})=>{
       const config = { headers: { ...defaultHeaders, ...headers } };
       return requestsWithHeaders.delete('stavkeKorpe/isprazniKorpu', config);
+    },
+    deleteKorpaFromCurrentUser:(headers={})=>{
+      const config = { headers: { ...defaultHeaders, ...headers } };
+      return requestsWithHeaders.delete('korpe/korpaTrenutnog',config);
     }
 }
 

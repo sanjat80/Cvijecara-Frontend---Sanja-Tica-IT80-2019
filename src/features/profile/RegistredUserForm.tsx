@@ -15,64 +15,10 @@ interface Props{
 
 
 export default function RegistredUserForm({user}:Props) {
-    /*const isUpdateAction = !!product;
-    validationSchema = isUpdateAction ? updateValidationSchema : createValidationSchema*/
     const { control, reset } = useForm<FieldValues>({
         defaultValues:user
     });
 
-    /*function handleSubmitData(data:FieldValues, event: React.FormEvent<HTMLFormElement>){
-        event.preventDefault();
-        try {
-            if(product)
-            {
-                console.log(product)
-                const productData: Proizvod = {
-                    proizvodId: data.proizvodId, 
-                    naziv: data.naziv, 
-                    cijena: data.cijena, 
-                    valuta: data.valuta, 
-                    velicina: data.velicina, 
-                    zalihe: data.zalihe, 
-                    pakovanjeId: data.pakovanjeId, 
-                    kategorijaId: data.kategorijaId, 
-                    vrstaId: data.vrstaId
-                  };
-                agent.Admin.updateProduct(productData)
-                  .then((response: Proizvod) => {
-                    
-                    console.log('Product updated:', response);
-                    cancelEdit();
-                    
-                  })
-
-                  .catch((error: any) => {
-                    console.log('Error updating product:', error);
-                  });
-            
-                } else {
-                    console.log(product)
-                    const productData: CreateProizvod = {
-                        //proizvodId: data.proizvodId, 
-                        naziv: data.naziv,
-                        cijena: data.cijena,
-                        valuta: data.valuta,
-                        velicina: data.velicina, 
-                        zalihe: data.zalihe, 
-                        pakovanjeId: data.pakovanjeId, 
-                        kategorijaId: data.kategorijaId,
-                        vrstaId: data.vrstaId 
-                      };
-                    agent.Admin.createProduct(productData).then((response: Proizvod)=>{
-                        toast.success("Proizvod uspjesno dodat");
-                        cancelEdit();
-                    })
-                }
-            } catch( error)
-            {
-                console.log(error);
-            }
-    }*/
     function handleSubmitData(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
       
@@ -136,6 +82,9 @@ export default function RegistredUserForm({user}:Props) {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <AppTextInput control={control} name='email' label='Email' />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <AppTextInput control={control} name='korisnickoIme' label='Korisnicko ime' />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <AppTextInput control={control} name='lozinka' label='Lozinka' />

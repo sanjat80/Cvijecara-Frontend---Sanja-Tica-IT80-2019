@@ -109,11 +109,15 @@ export default function Checkout() {
               name: 'John Doe',
             },
           },
-        });
-        console.log(paymentResult)
+        })
+          console.log(paymentResult)
+        
         if(paymentResult.paymentIntent?.status === 'succeeded'){
           //agent.Order.createOrder();
           agent.Basket.deleteAllFromKorpa();
+          setTimeout(async () =>{
+            agent.Basket.deleteKorpaFromCurrentUser();
+          }, 1000)
           setPaymentSucceeded(true);
           setPaymentMessage('Vasa porudzbina je prihvacena, hvala!');
           setActiveStep(activeStep+1);
@@ -130,23 +134,58 @@ export default function Checkout() {
       setLoading(false);
     }
   }
-  const handleNext = async(data:FieldValues) => {
+  /*const handleNext = async(data:FieldValues) => {
+    setLoading(true)
     if(activeStep === 0)
     {
-        agent.Order.createDetaljiIsporuke(data)
+        await agent.Order.createDetaljiIsporuke(data)
     }
     else if(activeStep === 1)
     {
-      agent.Order.updatePorudzbina();
+       await agent.Order.updatePorudzbina();
     }
     else if(activeStep === steps.length - 1)
     {
-      console.log('pozvano')
-      await submitOrder(data);
-      //toast.success('Pozvano')
-    }
+      console.log('pozvano');
+    await submitOrder(data);
+    setTimeout(() => {
+      setLoading(false);
+      setActiveStep(activeStep + 1);
+    }, 0);
+    return;
+  }
+    setLoading(false)
     setActiveStep(activeStep + 1);
+  };*/
+  const handleNext = () => {
+    methods.handleSubmit((data) => {
+      setLoading(true);
+      if (activeStep === 0) {
+        agent.Order.createDetaljiIsporuke(data)
+          .then(() => {
+            setLoading(false);
+            setActiveStep(activeStep + 1);
+          })
+          .catch((error) => {
+            console.log(error);
+            setLoading(false);
+          });
+      } else if (activeStep === 1) {
+        agent.Order.updatePorudzbina()
+          .then(() => {
+            setLoading(false);
+            setActiveStep(activeStep + 1);
+          })
+          .catch((error) => {
+            console.log(error);
+            setLoading(false);
+          });
+      }else if (activeStep === steps.length - 1) {
+        submitOrder(data);
+      }
+    })();
   };
+  
 
   function submitDisabled():boolean{
     if(activeStep === steps.length-1){
@@ -217,7 +256,7 @@ export default function Checkout() {
                   Back
               </Button>
                 )}
-                 <Button style={{marginTop:'24px'}} onClick={handleNext}>
+                 <Button style={{marginTop:'24px'}} onClick={activeStep === steps.length - 1 ? submitOrder : handleNext}>
                 {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
                 </Button>
               </Box>
