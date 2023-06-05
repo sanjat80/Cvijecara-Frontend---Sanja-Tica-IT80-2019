@@ -221,6 +221,10 @@ const Order ={
   getAllPorudzbinaFromCurrentUser:(headers={})=>{
     const config = { headers: { ...defaultHeaders, ...headers } };
     return requestsWithHeaders.get('porudzbine/porudzbineKorpe',config)
+  },
+  getAllPorudzbine:(headers={})=>{
+    const config ={ headers: { ...defaultHeaders, ...headers } };
+    return requestsWithHeaders.get('porudzbine',config)
   }
 }
 

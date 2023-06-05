@@ -59,14 +59,15 @@ export default function Checkout() {
   const stripe = useStripe();
   const elements = useElements();
   function onCardInputChange(event:any){
-    setCardState({
-      ...cardState,
+    setCardState((prevState)=>({
+      ...prevState,
       elementError:{
-        ...cardState.elementError,
+        ...prevState.elementError,
         [event.elementType]:event.error?.message
-      }
-    })
-    setCardComplete({...cardComplete, [event.elementType]:event.complete})
+      },
+    }));
+    setCardComplete((prevState :any)=>({
+      ...prevState, [event.elementType]:event.complete}));
   }
   const methods = useForm({
     mode:'all',
@@ -134,20 +135,20 @@ export default function Checkout() {
       setLoading(false);
     }
   }
-  /*const handleNext = async(data:FieldValues) => {
+  const handleNext = async(data:FieldValues) => {
     setLoading(true)
     if(activeStep === 0)
     {
-        await agent.Order.createDetaljiIsporuke(data)
+        agent.Order.createDetaljiIsporuke(data)
     }
     else if(activeStep === 1)
     {
-       await agent.Order.updatePorudzbina();
+       agent.Order.updatePorudzbina();
     }
     else if(activeStep === steps.length - 1)
     {
       console.log('pozvano');
-    await submitOrder(data);
+     submitOrder(data);
     setTimeout(() => {
       setLoading(false);
       setActiveStep(activeStep + 1);
@@ -156,15 +157,15 @@ export default function Checkout() {
   }
     setLoading(false)
     setActiveStep(activeStep + 1);
-  };*/
-  const handleNext = () => {
-    methods.handleSubmit((data) => {
+  };
+ /*const handleNext =(data: FieldValues) => {
+  methods.handleSubmit((data) => {
       setLoading(true);
       if (activeStep === 0) {
         agent.Order.createDetaljiIsporuke(data)
           .then(() => {
             setLoading(false);
-            setActiveStep(activeStep + 1);
+            //setActiveStep(activeStep + 1);
           })
           .catch((error) => {
             console.log(error);
@@ -174,17 +175,18 @@ export default function Checkout() {
         agent.Order.updatePorudzbina()
           .then(() => {
             setLoading(false);
-            setActiveStep(activeStep + 1);
+            //setActiveStep(activeStep + 1);
           })
           .catch((error) => {
             console.log(error);
             setLoading(false);
           });
       }else if (activeStep === steps.length - 1) {
-        submitOrder(data);
+        submitOrder(data)
       }
+      setActiveStep(activeStep+1)
     })();
-  };
+  };*/
   
 
   function submitDisabled():boolean{
@@ -248,7 +250,7 @@ export default function Checkout() {
               )}
             </React.Fragment>
           ) : (
-            <form onSubmit={methods.handleSubmit(handleNext)}>
+            <form onSubmit={handleNext}>
               {getStepContent(activeStep)}
               <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 {activeStep !== 0 && (
@@ -256,7 +258,7 @@ export default function Checkout() {
                   Back
               </Button>
                 )}
-                 <Button style={{marginTop:'24px'}} onClick={activeStep === steps.length - 1 ? submitOrder : handleNext}>
+                 <Button style={{marginTop:'24px'}} onClick={handleNext}>
                 {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
                 </Button>
               </Box>

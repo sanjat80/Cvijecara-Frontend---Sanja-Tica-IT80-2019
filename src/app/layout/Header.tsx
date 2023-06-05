@@ -5,12 +5,10 @@ import { useAppDispatch, useAppSelector } from "../store/configureStore";
 import SignedInMenu from "./SignedInMenu";
 import { useEffect, useState } from "react";
 import { setUser } from "../../features/account/accountSlice";
-import jwtDecode from "jwt-decode";
+
 
 const midLinks = [
     {title:'katalog', path:'/catalog'},
-    //{title:'o nama',path:'/about'},
-    //{title:'kontakt',path:'/contact'}
 ]
 
 const rightLinks = [
@@ -31,12 +29,6 @@ export default function Header({darkMode, handleThemeChange}:Props){
     const dispatch = useAppDispatch();
     const [isAdmin, setIsAdmin] = useState(false);
     const {user} = useAppSelector(state => state.account);
-    /*const userToken = localStorage.getItem('user');
-    const token = userToken ? JSON.parse(userToken).data.token : '';
-    const decodedToken = jwtDecode<{ roles: string[] }>(token);
-    const {roles} = decodedToken;
-    const isAdmin = roles && roles.includes('admin'); */
-    //const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
@@ -94,6 +86,14 @@ export default function Header({darkMode, handleThemeChange}:Props){
                         sx={{color:'inherit',typography: 'h6',fontWeight:'bold'}}
                        >
                            ADMIN
+                       </ListItem>}
+                       {user && isAdmin && 
+                        <ListItem
+                        component={NavLink}
+                        to={'/orders'}
+                        sx={{color:'inherit',typography: 'h6',fontWeight:'bold'}}
+                       >
+                          PORUDZBINE
                        </ListItem>}
                 </List>
                 

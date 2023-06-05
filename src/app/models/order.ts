@@ -4,5 +4,7 @@ export interface Porudzbina{
     datumKreiranja:string,
     statusPorudzbine:string,
     racun:number,
-    popust:number
+    popust:number,
+    paymentIntentId:string,
+    clientSecret:string
 }

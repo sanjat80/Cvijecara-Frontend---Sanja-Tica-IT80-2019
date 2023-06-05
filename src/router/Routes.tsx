@@ -24,6 +24,7 @@ import Pakovanja from "../features/admin/Pakovanja";
 import Kategorije from "../features/admin/Kategorije";
 import Vrste from "../features/admin/Vrste";
 import { ReactNode } from "react";
+import Porudzbine from "../features/admin/Porudzbine";
 
 function InventoryRoute() {
     const user = localStorage.getItem('user');
@@ -76,7 +77,6 @@ export const router = createBrowserRouter([
             {path:'register',element: <Register/>},
             {path:'basket', element:<BasketPage/>},
             {path:'checkout',element:<CheckoutWrapper/>},
-            {path:'orders',element:<Orders/>},
             {
                 path:'inventory',
                 element: <InventoryRoute/>
@@ -118,6 +118,14 @@ export const router = createBrowserRouter([
               <ProtectedRoute
                 role="admin"
                 authorizedElement={<Vrste />}
+                unauthorizedElement={<Navigate to="/login" replace />}
+                redirectPath="/login"
+              />
+            )},
+            {path:'orders',element:(
+              <ProtectedRoute
+                role="admin"
+                authorizedElement={<Porudzbine />}
                 unauthorizedElement={<Navigate to="/login" replace />}
                 redirectPath="/login"
               />
