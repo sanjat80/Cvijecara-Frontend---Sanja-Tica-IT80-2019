@@ -1,15 +1,20 @@
 This project is a frontend application for an online flower shop, developed using React. It serves as an e-commerce platform where users can browse a variety of products, apply filters, and sort items according to their preferences.
 
 Features
+
 Product Browsing: Users can view detailed information about flowers and arrangements available for purchase.
 Filtering and Sorting: The application provides options to filter products by categories and sort them based on various criteria.
 Shopping Cart: Users can easily add products to their cart for a streamlined shopping experience.
 Online Payment: Integration with Stripe allows users to securely complete their purchases online.
+
 User Registration: Users can create accounts and manage their profiles.
 User Roles: There are two main types of user roles:
+
 Regular User (Customer): Can browse products, add items to the cart, and complete purchases.
 Admin: Admins have access to an admin panel, allowing them to manage application data, including product listings and user accounts.
+
 Technologies Used
+
 React: The core framework used for building the user interface.
 Stripe: For handling online payments securely.
 Redux (if applicable): For state management across the application.
